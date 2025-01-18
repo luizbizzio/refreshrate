@@ -9,6 +9,7 @@ const urlsToCache = [
   '/LICENSE',
   '/robots.txt',
   '/sw.js',
+  '/humans.txt',
 ];
 
 self.addEventListener('install', (event) => {
