@@ -1,0 +1,10 @@
+/* TEAM */
+Developer: Luiz Bizzio
+Website: https://luizbizzio.com
+Location: Netherlands
+Email: contact@luizbizzio.com
+
+/* SITE */
+Last update: 2025-01-19
+Standards: HTML5, CSS3, Javascript
+Hosting: Cloudflare Pages
