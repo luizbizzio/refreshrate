@@ -400,6 +400,27 @@
         `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
     });
 
+    function restartAnimations() {
+      const animatedElements = [
+        animationSquare,
+        animationTriangle,
+        animationRect,
+        animationPulse,
+        animationColor,
+      ];
+    
+      animatedElements.forEach((element) => {
+        if (element) {
+          element.style.animation = 'none';
+          element.offsetHeight;
+          element.style.animation = '';
+        }
+      });
+    }
+    
+    window.addEventListener('orientationchange', restartAnimations);
+    window.addEventListener('resize', restartAnimations);
+      
     window.requestAnimationFrame(animateBall);
     window.requestAnimationFrame(calculatePerformanceMetrics);
   })();
