@@ -54,10 +54,6 @@
   
 </head>
 <body>
-  <div id="orientation-overlay">
-    <h2>Please Rotate Your Device</h2>
-    <p>This website is best viewed in landscape mode.</p>
-  </div>
 
   <button id="fullscreen-button">Enter Fullscreen</button>
   <h1>Refresh Rate</h1>
@@ -192,7 +188,6 @@
       const oneMsBall = document.getElementById('one-ms-ball');
       const ghostCountElem = document.getElementById('ghost-count');
 
-      const orientationOverlay = document.getElementById('orientation-overlay');
 
       let ghostLifetime = parseInt(updateIntervalSelector.value, 10);
       let duration = parseInt(updateIntervalSelector.value, 10);
@@ -407,18 +402,6 @@
 
       function isMobileDevice() {
         return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
-
-      function checkOrientation() {
-        if (isMobileDevice()) {
-          if (window.matchMedia("(orientation: portrait)").matches) {
-            orientationOverlay.classList.remove('hidden');
-          } else {
-            orientationOverlay.classList.add('hidden');
-          }
-        } else {
-          orientationOverlay.classList.add('hidden');
-        }
       }
 
       window.addEventListener('load', checkOrientation);
