@@ -195,7 +195,7 @@
 
       let startTime = null;
 
-      const distance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
+      let distance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
 
       function animateBall(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -217,25 +217,25 @@
         }
       }
 
-      function createGhostBall(xPos) {
-        const ghost = document.createElement('div');
-        ghost.className = 'ghost-ball';
-        ghost.style.top = oneMsBall.style.top || 'calc(50% - 25px)';
-        ghost.style.left = `${xPos}px`;
-        oneMsContainer.appendChild(ghost);
-        ghostCount++;
+    function createGhostBall(xPos) {
+      const ghost = document.createElement('div');
+      ghost.className = 'ghost-ball';
+      ghost.style.top = oneMsBall.style.top || 'calc(50% - 25px)';
+      ghost.style.left = `${xPos}px`;
+      oneMsContainer.appendChild(ghost);
+      ghostCount++;
+      updateGhostCount();
+    
+      requestAnimationFrame(() => {
+        ghost.style.opacity = '0';
+      });
+    
+      setTimeout(() => {
+        ghost.remove();
+        ghostCount--;
         updateGhostCount();
-
-        requestAnimationFrame(() => {
-          ghost.style.opacity = '0';
-        });
-
-        setTimeout(() => {
-          ghost.remove();
-          ghostCount--;
-          updateGhostCount();
-        }, ghostLifetime);
-      }
+      }, ghostLifetime);
+    }
 
       function updateGhostCount() {
         ghostCountElem.textContent = `👻 Ghost Count: ${ghostCount}`;
@@ -401,6 +401,11 @@
     });
 
     function restartAnimations() {
+      const newDistance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
+      if (newDistance !== distance) {
+        distance = newDistance;
+      }
+    
       const animatedElements = [
         animationSquare,
         animationTriangle,
@@ -416,6 +421,8 @@
           element.style.animation = '';
         }
       });
+    
+      startTime = null;
     }
     
     window.addEventListener('orientationchange', restartAnimations);
