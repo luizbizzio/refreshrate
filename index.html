@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Screen &amp; System Performance</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #2d2d2d;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s ease;
+    }
+
+    h1 {
+      margin: 30px 0 20px;
+      font-size: 2.5em;
+      text-transform: uppercase;
+      color: #4caf50;
+      text-shadow: 2px 2px 5px #000;
+      text-align: center;
+    }
+
+    #fullscreen-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: linear-gradient(135deg, #4caf50, #2e7d32);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+    #fullscreen-button:hover {
+      background: linear-gradient(135deg, #66bb6a, #388e3c);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    #animations-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 20px auto;
+      max-width: 1000px;
+    }
+    .animation-box {
+      width: 80px;
+      height: 80px;
+      margin: 20px;
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      will-change: transform, background-color;
+    }
+
+    #animation-square {
+      background-color: #4caf50;
+      animation: rotateSquare 2s linear infinite;
+    }
+    @keyframes rotateSquare {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #animation-triangle {
+      width: 0;
+      height: 0;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-bottom: 60px solid #ff9800;
+      animation: moveTriangle 3s ease-in-out infinite;
+    }
+    @keyframes moveTriangle {
+      0% {
+        transform: translateX(-30px);
+      }
+      50% {
+        transform: translateX(30px);
+      }
+      100% {
+        transform: translateX(-30px);
+      }
+    }
+
+    #animation-rectangle {
+      width: 80px;
+      height: 40px;
+      background-color: #f44336;
+      animation: bounceRect 1.5s ease-in-out infinite;
+    }
+    @keyframes bounceRect {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+
+    #animation-pulse {
+      border-radius: 50%;
+      background-color: #9c27b0;
+      animation: pulseCircle 2s ease-in-out infinite;
+    }
+    @keyframes pulseCircle {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+    }
+
+    #animation-color {
+      background-color: #2196f3;
+      animation: colorShift 3s linear infinite;
+    }
+    @keyframes colorShift {
+      0% {
+        background-color: #2196f3;
+      }
+      25% {
+        background-color: #e91e63;
+      }
+      50% {
+        background-color: #ffeb3b;
+      }
+      75% {
+        background-color: #4caf50;
+      }
+      100% {
+        background-color: #2196f3;
+      }
+    }
+
+    #one-ms-container {
+      position: relative;
+      max-width: 800px; 
+      height: 60px;
+      margin: 30px auto;
+      border: 2px dashed #aaa;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    #one-ms-ball {
+      position: absolute;
+      top: calc(50% - 25px);
+      left: 0;
+      width: 50px;
+      height: 50px;
+      background: red;
+      border-radius: 50%;
+      border: 2px dashed #000;
+      will-change: transform;
+    }
+
+    .ghost-ball {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: orange;
+      opacity: 0.15;
+      pointer-events: none;
+      border: 3px dashed #000;
+      transition: opacity 0.3s;
+    }
+
+    #ball-info {
+      text-align: center;
+      font-size: 1.1em;
+      margin-top: 10px;
+      color: #ffe680;
+    }
+
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 1000px;
+      background-color: #3c3c3c;
+      color: #e0e0e0;
+      table-layout: fixed;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #555;
+    }
+    th {
+      background-color: #444;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    #controls {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+    #controls input[type="color"] {
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+    }
+    #controls select {
+      padding: 5px 10px;
+      border: 1px solid #555;
+      background-color: #3c3c3c;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #ghost-count {
+      text-align: center;
+      font-size: 1.2em;
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+
+    #warning {
+      margin: 20px auto;
+      font-size: 1.2em;
+      color: #f44336;
+      font-weight: bold;
+      background-color: #ffcccb;
+      border: 2px solid #d32f2f;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 600px;
+      display: none;
+    }
+
+    #footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9em;
+      border-top: 1px solid #555;
+      padding: 10px;
+    }
+
+    #orientation-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 9999;
+      flex-direction: column;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      opacity: 1;
+      visibility: visible;
+    }
+    #orientation-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #orientation-overlay img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    #orientation-overlay h2 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+    #orientation-overlay p {
+      font-size: 1.1em;
+    }
+
+    @media (min-width: 768px) {
+      #orientation-overlay {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="orientation-overlay">
+    <h2>Please Rotate Your Device</h2>
+    <p>This website is best viewed in landscape mode.</p>
+  </div>
+
+  <button id="fullscreen-button">Enter Fullscreen</button>
+  <h1>Screen &amp; System Performance</h1>
+
+  <div id="animations-container">
+    <div class="animation-box" id="animation-square"></div>
+    <div class="animation-box" id="animation-triangle"></div>
+    <div class="animation-box" id="animation-rectangle"></div>
+    <div class="animation-box" id="animation-pulse"></div>
+    <div class="animation-box" id="animation-color"></div>
+  </div>
+
+  <div id="one-ms-container">
+    <div id="one-ms-ball"></div>
+  </div>
+
+  <p id="ghost-count">👻 Ghost Count: 0</p>
+
+  <p id="ball-info">
+    The more times you see this ball simultaneously on your screen, the smoother your monitor’s refresh rate is.
+  </p>
+  
+  <div id="controls">
+    <label>
+      Background Color:
+      <input type="color" id="background-color" value="#2d2d2d">
+    </label>
+    <label>
+      Decimals:
+      <select id="decimal-places">
+        <option value="1">1</option>
+        <option value="2" selected>2</option>
+        <option value="3">3</option>
+      </select>
+    </label>
+    <label>
+      Update Interval:
+      <select id="update-interval">
+        <option value="50">50 ms</option>
+        <option value="100" selected>100 ms</option>
+        <option value="250">250 ms</option>
+        <option value="500">500 ms</option>
+        <option value="1000">1000 ms</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="warning">⚠️ This browser window is not on the primary monitor!</div>
+
+  <table>
+    <tr>
+      <th>Parameter</th>
+      <th>Value</th>
+    </tr>
+    <tr>
+      <td>FPS (Frames per Second)</td>
+      <td id="fps">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Frame Duration (ms)</td>
+      <td id="frame-duration">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Refresh Rate (Hz)</td>
+      <td id="refresh-rate">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Pixels per Frame</td>
+      <td id="pixels-per-frame">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Pixels per Second</td>
+      <td id="pixels-per-second">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Aspect Ratio</td>
+      <td id="aspect-ratio">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Screen Resolution</td>
+      <td id="resolution">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Scale (System)</td>
+      <td id="scale">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Screen Orientation</td>
+      <td id="orientation">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Bit Depth (bpc)</td>
+      <td id="bit-depth">Calculating...</td>
+    </tr>
+    <tr>
+      <td>Color Space</td>
+      <td id="color-space">Calculating...</td>
+    </tr>
+  </table>
+
+  <div id="footer">
+    © 2025 Your Company Name. All rights reserved.
+  </div>
+
+  <script>
+    (function screenAndSystemDetails() {
+      const fpsElement             = document.getElementById('fps');
+      const frameDurationElement   = document.getElementById('frame-duration');
+      const refreshRateElement     = document.getElementById('refresh-rate');
+      const pixelsPerFrameElement  = document.getElementById('pixels-per-frame');
+      const pixelsPerSecondElement = document.getElementById('pixels-per-second');
+      const aspectRatioElement     = document.getElementById('aspect-ratio');
+      const resolutionElement      = document.getElementById('resolution');
+      const scaleElement           = document.getElementById('scale');
+      const orientationElement     = document.getElementById('orientation');
+      const warningElement         = document.getElementById('warning');
+      const fullscreenButton       = document.getElementById('fullscreen-button');
+      const backgroundColorPicker  = document.getElementById('background-color');
+      const decimalPlacesSelector  = document.getElementById('decimal-places');
+      const updateIntervalSelector = document.getElementById('update-interval');
+
+      const bitDepthElement = document.getElementById('bit-depth');
+      const colorSpaceElement = document.getElementById('color-space');
+
+      const animationSquare   = document.getElementById('animation-square');
+      const animationTriangle = document.getElementById('animation-triangle');
+      const animationRect     = document.getElementById('animation-rectangle');
+      const animationPulse    = document.getElementById('animation-pulse');
+      const animationColor    = document.getElementById('animation-color');
+
+      const oneMsContainer = document.getElementById('one-ms-container');
+      const oneMsBall = document.getElementById('one-ms-ball');
+      const ghostCountElem = document.getElementById('ghost-count');
+
+      const orientationOverlay = document.getElementById('orientation-overlay');
+
+      let ghostLifetime = parseInt(updateIntervalSelector.value, 10);
+      let duration = parseInt(updateIntervalSelector.value, 10);
+      let ghostCount = 0; 
+
+      let startTime = null;
+
+      const distance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
+
+      function animateBall(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+
+        let progress = elapsed / duration;
+        if (progress > 1) progress = 1;
+
+        const currentX = progress * distance;
+        oneMsBall.style.transform = `translateX(${currentX}px)`;
+
+        createGhostBall(currentX);
+
+        if (progress < 1) {
+          window.requestAnimationFrame(animateBall);
+        } else {
+          startTime = null;
+          window.requestAnimationFrame(animateBall);
+        }
+      }
+
+      function createGhostBall(xPos) {
+        const ghost = document.createElement('div');
+        ghost.className = 'ghost-ball';
+        ghost.style.top = oneMsBall.style.top || 'calc(50% - 25px)';
+        ghost.style.left = `${xPos}px`;
+        oneMsContainer.appendChild(ghost);
+        ghostCount++;
+        updateGhostCount();
+
+        requestAnimationFrame(() => {
+          ghost.style.opacity = '0';
+        });
+
+        setTimeout(() => {
+          ghost.remove();
+          ghostCount--;
+          updateGhostCount();
+        }, ghostLifetime);
+      }
+
+      function updateGhostCount() {
+        ghostCountElem.textContent = `👻 Ghost Count: ${ghostCount}`;
+      }
+
+      const aspectRatios = {
+        "4:3"   : 4 / 3,
+        "16:10" : 16 / 10,
+        "16:9"  : 16 / 9,
+        "21:9"  : 21 / 9,
+        "32:9"  : 32 / 9,
+        "5:4"   : 5 / 4,
+        "3:2"   : 3 / 2,
+        "2:1"   : 2 / 1,
+      };
+
+      let updateInterval = parseInt(updateIntervalSelector.value, 10);
+
+      updateIntervalSelector.addEventListener('change', (event) => {
+        updateInterval = parseInt(event.target.value, 10);
+        ghostLifetime = updateInterval;
+        duration = updateInterval;
+        startTime = null;
+      });
+
+      function findClosestAspectRatio(ratio, width, height) {
+        let closestRatio = null;
+        let smallestDiff = Infinity;
+        for (const [key, value] of Object.entries(aspectRatios)) {
+          const diff = Math.abs(value - ratio);
+          if (diff < smallestDiff) {
+            closestRatio = key;
+            smallestDiff = diff;
+          }
+        }
+        return (smallestDiff < 0.01) ? closestRatio : `${width}:${height}`;
+      }
+
+      function updateScreenDetails() {
+        const width  = screen.width * window.devicePixelRatio;
+        const height = screen.height * window.devicePixelRatio;
+        const scale  = window.devicePixelRatio * 100;
+
+        let currentOrientation = "Unknown";
+        if (screen.orientation && screen.orientation.type) {
+          currentOrientation = screen.orientation.type.includes('landscape')
+            ? 'Landscape'
+            : 'Portrait';
+        }
+
+        const ratio       = width / height;
+        const aspectRatio = findClosestAspectRatio(ratio, width, height);
+
+        resolutionElement.textContent  = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
+        scaleElement.textContent       = `${scale.toFixed(0)}%`;
+        orientationElement.textContent = currentOrientation;
+        aspectRatioElement.textContent = aspectRatio;
+
+        const isPrimaryMonitor = (
+          window.screenX >= 0 &&
+          window.screenY >= 0 &&
+          screen.availWidth === screen.width
+        );
+        warningElement.style.display = isPrimaryMonitor ? 'none' : 'block';
+
+        const cDepthTotal = screen.colorDepth;
+        let bitsPerChannel = cDepthTotal / 3;
+        bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
+        bitDepthElement.textContent = bitsPerChannel + '-bit';
+
+        let colorSpaceDetected = 'Unknown';
+        if (window.matchMedia) {
+          if (window.matchMedia('(dynamic-range: high)').matches) {
+            colorSpaceDetected = 'HDR';
+          } else if (window.matchMedia('(dynamic-range: standard)').matches) {
+            colorSpaceDetected = 'SDR';
+          }
+        }
+        colorSpaceElement.textContent = colorSpaceDetected;
+
+        return isPrimaryMonitor;
+      }
+
+      let frameTimes = [];
+      let fpsFrameCount = 0;
+      let fpsStartTime = performance.now();
+      let lastUpdate = 0;
+
+      function calculatePerformanceMetrics(timestamp) {
+        const isPrimaryMonitor = updateScreenDetails();
+
+        if (!isPrimaryMonitor) {
+          fpsElement.textContent             = 'Canceled';
+          frameDurationElement.textContent   = 'Canceled';
+          refreshRateElement.textContent     = 'Canceled';
+          pixelsPerFrameElement.textContent  = 'Canceled';
+          pixelsPerSecondElement.textContent = 'Canceled';
+        } else {
+          fpsFrameCount++;
+          const elapsedTime = timestamp - fpsStartTime;
+          if (elapsedTime >= updateInterval) {
+            const fps = fpsFrameCount / (elapsedTime / 1000);
+            fpsFrameCount = 0;
+            fpsStartTime = timestamp;
+
+            fpsElement.textContent =
+              `${fps.toFixed(parseInt(decimalPlacesSelector.value, 10))} fps`;
+
+            if (fps > 0) {
+              const frameDurationMs = 1000 / fps;
+              frameDurationElement.textContent =
+                `${frameDurationMs.toFixed(parseInt(decimalPlacesSelector.value, 10))} ms`;
+            } else {
+              frameDurationElement.textContent = '∞';
+            }
+          }
+
+          frameTimes.push(timestamp);
+          if (frameTimes.length > 100) frameTimes.shift();
+          const intervals = frameTimes.slice(1).map((t, i) => t - frameTimes[i]);
+          const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+          const refreshRate = 1000 / avgInterval;
+
+          if (timestamp - lastUpdate >= updateInterval) {
+            refreshRateElement.textContent =
+              `${refreshRate.toFixed(parseInt(decimalPlacesSelector.value, 10))} Hz`;
+
+            const width = screen.width * window.devicePixelRatio;
+            const height = screen.height * window.devicePixelRatio;
+            const pixelsPerFrame = width * height;
+            const pixelsPerSecond = pixelsPerFrame * refreshRate;
+
+            pixelsPerFrameElement.textContent  = `${pixelsPerFrame.toLocaleString()} px`;
+            pixelsPerSecondElement.textContent = `${pixelsPerSecond.toLocaleString()} px/s`;
+
+            const newDuration = (60 / refreshRate).toFixed(2);
+            if (newDuration > 0.1 && newDuration < 10 && !isNaN(newDuration)) {
+              animationSquare.style.animationDuration   = newDuration + 's';
+              animationTriangle.style.animationDuration = newDuration + 's';
+              animationRect.style.animationDuration     = newDuration + 's';
+              animationPulse.style.animationDuration    = newDuration + 's';
+              animationColor.style.animationDuration    = newDuration + 's';
+            }
+            lastUpdate = timestamp;
+          }
+        }
+        window.requestAnimationFrame(calculatePerformanceMetrics);
+      }
+
+      fullscreenButton.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(err => console.error(err));
+          fullscreenButton.textContent = 'Exit Fullscreen';
+        } else {
+          document.exitFullscreen().catch(err => console.error(err));
+          fullscreenButton.textContent = 'Enter Fullscreen';
+        }
+      });
+
+      backgroundColorPicker.addEventListener('input', (event) => {
+        document.body.style.background =
+          `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
+      });
+
+      function isMobileDevice() {
+        return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+
+      function checkOrientation() {
+        if (isMobileDevice()) {
+          if (window.matchMedia("(orientation: portrait)").matches) {
+            orientationOverlay.classList.remove('hidden');
+          } else {
+            orientationOverlay.classList.add('hidden');
+          }
+        } else {
+          orientationOverlay.classList.add('hidden');
+        }
+      }
+
+      window.addEventListener('load', checkOrientation);
+      window.addEventListener('resize', checkOrientation);
+      window.addEventListener('orientationchange', checkOrientation);
+      window.requestAnimationFrame(animateBall);
+      window.requestAnimationFrame(calculatePerformanceMetrics);
+      window.addEventListener('resize', updateScreenDetails);
+    })();
+  </script>
+</body>
+</html>
