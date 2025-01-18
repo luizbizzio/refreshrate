@@ -385,32 +385,24 @@
         window.requestAnimationFrame(calculatePerformanceMetrics);
       }
 
-      fullscreenButton.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(err => console.error(err));
-          fullscreenButton.textContent = 'Exit Fullscreen';
-        } else {
-          document.exitFullscreen().catch(err => console.error(err));
-          fullscreenButton.textContent = 'Enter Fullscreen';
-        }
-      });
-
-      backgroundColorPicker.addEventListener('input', (event) => {
-        document.body.style.background =
-          `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
-      });
-
-      function isMobileDevice() {
-        return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    fullscreenButton.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.error(err));
+        fullscreenButton.textContent = 'Exit Fullscreen';
+      } else {
+        document.exitFullscreen().catch(err => console.error(err));
+        fullscreenButton.textContent = 'Enter Fullscreen';
       }
+    });
 
-      window.addEventListener('load', checkOrientation);
-      window.addEventListener('resize', checkOrientation);
-      window.addEventListener('orientationchange', checkOrientation);
-      window.requestAnimationFrame(animateBall);
-      window.requestAnimationFrame(calculatePerformanceMetrics);
-      window.addEventListener('resize', updateScreenDetails);
-    })();
-  </script>
+    backgroundColorPicker.addEventListener('input', (event) => {
+      document.body.style.background =
+        `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
+    });
+
+    window.requestAnimationFrame(animateBall);
+    window.requestAnimationFrame(calculatePerformanceMetrics);
+  })();
+</script>
 </body>
 </html>
