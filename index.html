@@ -250,16 +250,34 @@
         "5:4"   : 5 / 4,
         "3:2"   : 3 / 2,
         "2:1"   : 2 / 1,
+      
+        "19.5:9" : 19.5 / 9,
+        "20:9"   : 20 / 9,
+        "18:9"   : 18 / 9,
+        "18.5:9" : 18.5 / 9,
+        "19:9"   : 19 / 9,
+        "21:10"  : 21 / 10,
+      
+        "4:3"    : 4 / 3,
+        "3:4"    : 3 / 4,
+        "5:3"    : 5 / 3,
+        "8:5"    : 8 / 5,
+        "10:3"   : 10 / 3,
+      
+        "1:1"    : 1 / 1,
+        "9:16"   : 9 / 16,
+        "11:9"   : 11 / 9,
+        "1.91:1" : 1.91 / 1,
       };
-
-      let updateInterval = parseInt(updateIntervalSelector.value, 10);
-
-      updateIntervalSelector.addEventListener('change', (event) => {
-        updateInterval = parseInt(event.target.value, 10);
-        ghostLifetime = updateInterval;
-        duration = updateInterval;
-        startTime = null;
-      });
+      
+          let updateInterval = parseInt(updateIntervalSelector.value, 10);
+      
+           updateIntervalSelector.addEventListener('change', (event) => {
+           updateInterval = parseInt(event.target.value, 10);
+           ghostLifetime = updateInterval;
+           duration = updateInterval;
+           startTime = null;
+          });
 
       function findClosestAspectRatio(ratio, width, height) {
         let closestRatio = null;
