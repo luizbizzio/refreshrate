@@ -9,7 +9,7 @@
 
 <br>
 <div>
-  <img src="/screenshots/desktop-screenshot.jpg" alt="Desktop Screenshot" style="height: 350px;">  &nbsp;
+  &nbsp; <img src="/screenshots/desktop-screenshot.jpg" alt="Desktop Screenshot" style="height: 350px;">  &nbsp; &nbsp;
   <img src="/screenshots/mobile-screenshot.jpg" alt="Mobile Screenshot" style="height: 350px;">
 </div>
 <br>
