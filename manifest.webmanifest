@@ -10,5 +10,4 @@
   "background_color": "#2d2d2d",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
-  "orientation": "landscape"
 }
