@@ -158,64 +158,64 @@
     © 2025 Luiz Bizzio. All rights reserved.
   </div>
 
-  <script>
-    (function screenAndSystemDetails() {
-      const fpsElement             = document.getElementById('fps');
-      const frameDurationElement   = document.getElementById('frame-duration');
-      const refreshRateElement     = document.getElementById('refresh-rate');
-      const pixelsPerFrameElement  = document.getElementById('pixels-per-frame');
-      const pixelsPerSecondElement = document.getElementById('pixels-per-second');
-      const aspectRatioElement     = document.getElementById('aspect-ratio');
-      const resolutionElement      = document.getElementById('resolution');
-      const scaleElement           = document.getElementById('scale');
-      const orientationElement     = document.getElementById('orientation');
-      const warningElement         = document.getElementById('warning');
-      const fullscreenButton       = document.getElementById('fullscreen-button');
-      const backgroundColorPicker  = document.getElementById('background-color');
-      const decimalPlacesSelector  = document.getElementById('decimal-places');
-      const updateIntervalSelector = document.getElementById('update-interval');
+<script>
+  (function screenAndSystemDetails() {
+    const fpsElement             = document.getElementById('fps');
+    const frameDurationElement   = document.getElementById('frame-duration');
+    const refreshRateElement     = document.getElementById('refresh-rate');
+    const pixelsPerFrameElement  = document.getElementById('pixels-per-frame');
+    const pixelsPerSecondElement = document.getElementById('pixels-per-second');
+    const aspectRatioElement     = document.getElementById('aspect-ratio');
+    const resolutionElement      = document.getElementById('resolution');
+    const scaleElement           = document.getElementById('scale');
+    const orientationElement     = document.getElementById('orientation');
+    const warningElement         = document.getElementById('warning');
+    const fullscreenButton       = document.getElementById('fullscreen-button');
+    const backgroundColorPicker  = document.getElementById('background-color');
+    const decimalPlacesSelector  = document.getElementById('decimal-places');
+    const updateIntervalSelector = document.getElementById('update-interval');
 
-      const bitDepthElement = document.getElementById('bit-depth');
-      const colorSpaceElement = document.getElementById('color-space');
+    const bitDepthElement = document.getElementById('bit-depth');
+    const colorSpaceElement = document.getElementById('color-space');
 
-      const animationSquare   = document.getElementById('animation-square');
-      const animationTriangle = document.getElementById('animation-triangle');
-      const animationRect     = document.getElementById('animation-rectangle');
-      const animationPulse    = document.getElementById('animation-pulse');
-      const animationColor    = document.getElementById('animation-color');
+    const animationSquare   = document.getElementById('animation-square');
+    const animationTriangle = document.getElementById('animation-triangle');
+    const animationRect     = document.getElementById('animation-rectangle');
+    const animationPulse    = document.getElementById('animation-pulse');
+    const animationColor    = document.getElementById('animation-color');
 
-      const oneMsContainer = document.getElementById('one-ms-container');
-      const oneMsBall = document.getElementById('one-ms-ball');
-      const ghostCountElem = document.getElementById('ghost-count');
+    const oneMsContainer = document.getElementById('one-ms-container');
+    const oneMsBall = document.getElementById('one-ms-ball');
+    const ghostCountElem = document.getElementById('ghost-count');
 
 
-      let ghostLifetime = parseInt(updateIntervalSelector.value, 10);
-      let duration = parseInt(updateIntervalSelector.value, 10);
-      let ghostCount = -1; 
+    let ghostLifetime = parseInt(updateIntervalSelector.value, 10);
+    let duration = parseInt(updateIntervalSelector.value, 10);
+    let ghostCount = -1; 
 
-      let startTime = null;
+    let startTime = null;
 
-      let distance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
+    let distance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
 
-      function animateBall(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
+    function animateBall(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
 
-        let progress = elapsed / duration;
-        if (progress > 1) progress = 1;
+      let progress = elapsed / duration;
+      if (progress > 1) progress = 1;
 
-        const currentX = progress * distance;
-        oneMsBall.style.transform = `translateX(${currentX}px)`;
+      const currentX = progress * distance;
+      oneMsBall.style.transform = `translateX(${currentX}px)`;
 
-        createGhostBall(currentX);
+      createGhostBall(currentX);
 
-        if (progress < 1) {
-          window.requestAnimationFrame(animateBall);
-        } else {
-          startTime = null;
-          window.requestAnimationFrame(animateBall);
-        }
+      if (progress < 1) {
+        window.requestAnimationFrame(animateBall);
+      } else {
+        startTime = null;
+        window.requestAnimationFrame(animateBall);
       }
+    }
 
     function createGhostBall(xPos) {
       const ghost = document.createElement('div');
@@ -237,171 +237,171 @@
       }, ghostLifetime);
     }
 
-      function updateGhostCount() {
-        ghostCountElem.textContent = `👻 Ghost Count: ${ghostCount}`;
+    function updateGhostCount() {
+      ghostCountElem.textContent = `👻 Ghost Count: ${ghostCount}`;
+    }
+
+    const aspectRatios = {
+      "4:3"   : 4 / 3,
+      "16:10" : 16 / 10,
+      "16:9"  : 16 / 9,
+      "21:9"  : 21 / 9,
+      "32:9"  : 32 / 9,
+      "5:4"   : 5 / 4,
+      "3:2"   : 3 / 2,
+      "2:1"   : 2 / 1,
+    
+      "19.5:9" : 19.5 / 9,
+      "20:9"   : 20 / 9,
+      "18:9"   : 18 / 9,
+      "18.5:9" : 18.5 / 9,
+      "19:9"   : 19 / 9,
+      "21:10"  : 21 / 10,
+    
+      "4:3"    : 4 / 3,
+      "3:4"    : 3 / 4,
+      "5:3"    : 5 / 3,
+      "8:5"    : 8 / 5,
+      "10:3"   : 10 / 3,
+    
+      "1:1"    : 1 / 1,
+      "9:16"   : 9 / 16,
+      "11:9"   : 11 / 9,
+      "1.91:1" : 1.91 / 1,
+    };
+
+    let updateInterval = parseInt(updateIntervalSelector.value, 10);
+
+    updateIntervalSelector.addEventListener('change', (event) => {
+      updateInterval = parseInt(event.target.value, 10);
+      ghostLifetime = updateInterval;
+      duration = updateInterval;
+      startTime = null;
+    });
+
+    function findClosestAspectRatio(ratio, width, height) {
+      let closestRatio = null;
+      let smallestDiff = Infinity;
+      for (const [key, value] of Object.entries(aspectRatios)) {
+        const diff = Math.abs(value - ratio);
+        if (diff < smallestDiff) {
+          closestRatio = key;
+          smallestDiff = diff;
+        }
+      }
+      return (smallestDiff < 0.01) ? closestRatio : `${width}:${height}`;
+    }
+
+    function updateScreenDetails() {
+      const width  = window.innerWidth;
+      const height = window.innerHeight;
+      const scale  = window.devicePixelRatio * 100;
+
+      let currentOrientation = "Unknown";
+      if (screen.orientation && screen.orientation.type) {
+        currentOrientation = screen.orientation.type.includes('landscape')
+          ? 'Landscape'
+          : 'Portrait';
       }
 
-      const aspectRatios = {
-        "4:3"   : 4 / 3,
-        "16:10" : 16 / 10,
-        "16:9"  : 16 / 9,
-        "21:9"  : 21 / 9,
-        "32:9"  : 32 / 9,
-        "5:4"   : 5 / 4,
-        "3:2"   : 3 / 2,
-        "2:1"   : 2 / 1,
-      
-        "19.5:9" : 19.5 / 9,
-        "20:9"   : 20 / 9,
-        "18:9"   : 18 / 9,
-        "18.5:9" : 18.5 / 9,
-        "19:9"   : 19 / 9,
-        "21:10"  : 21 / 10,
-      
-        "4:3"    : 4 / 3,
-        "3:4"    : 3 / 4,
-        "5:3"    : 5 / 3,
-        "8:5"    : 8 / 5,
-        "10:3"   : 10 / 3,
-      
-        "1:1"    : 1 / 1,
-        "9:16"   : 9 / 16,
-        "11:9"   : 11 / 9,
-        "1.91:1" : 1.91 / 1,
-      };
-      
-          let updateInterval = parseInt(updateIntervalSelector.value, 10);
-      
-           updateIntervalSelector.addEventListener('change', (event) => {
-           updateInterval = parseInt(event.target.value, 10);
-           ghostLifetime = updateInterval;
-           duration = updateInterval;
-           startTime = null;
-          });
+      const ratio       = Math.max(width, height) / Math.min(width, height);
+      const aspectRatio = findClosestAspectRatio(ratio, width, height);
 
-      function findClosestAspectRatio(ratio, width, height) {
-        let closestRatio = null;
-        let smallestDiff = Infinity;
-        for (const [key, value] of Object.entries(aspectRatios)) {
-          const diff = Math.abs(value - ratio);
-          if (diff < smallestDiff) {
-            closestRatio = key;
-            smallestDiff = diff;
-          }
+      resolutionElement.textContent  = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
+      scaleElement.textContent       = `${scale.toFixed(0)}%`;
+      orientationElement.textContent = currentOrientation;
+      aspectRatioElement.textContent = aspectRatio;
+
+      const isPrimaryMonitor = (
+        window.screenX >= 0 &&
+        window.screenY >= 0 &&
+        screen.availWidth === screen.width
+      );
+      warningElement.style.display = isPrimaryMonitor ? 'none' : 'block';
+
+      const cDepthTotal = screen.colorDepth;
+      let bitsPerChannel = cDepthTotal / 3;
+      bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
+      bitDepthElement.textContent = bitsPerChannel + '-bit';
+
+      let colorSpaceDetected = 'Unknown';
+      if (window.matchMedia) {
+        if (window.matchMedia('(dynamic-range: high)').matches) {
+          colorSpaceDetected = 'HDR';
+        } else if (window.matchMedia('(dynamic-range: standard)').matches) {
+          colorSpaceDetected = 'SDR';
         }
-        return (smallestDiff < 0.01) ? closestRatio : `${width}:${height}`;
       }
+      colorSpaceElement.textContent = colorSpaceDetected;
 
-      function updateScreenDetails() {
-        const width  = screen.width * window.devicePixelRatio;
-        const height = screen.height * window.devicePixelRatio;
-        const scale  = window.devicePixelRatio * 100;
+      return isPrimaryMonitor;
+    }
 
-        let currentOrientation = "Unknown";
-        if (screen.orientation && screen.orientation.type) {
-          currentOrientation = screen.orientation.type.includes('landscape')
-            ? 'Landscape'
-            : 'Portrait';
-        }
+    let frameTimes = [];
+    let fpsFrameCount = 0;
+    let fpsStartTime = performance.now();
+    let lastUpdate = 0;
 
-        const ratio       = width / height;
-        const aspectRatio = findClosestAspectRatio(ratio, width, height);
+    function calculatePerformanceMetrics(timestamp) {
+      const isPrimaryMonitor = updateScreenDetails();
 
-        resolutionElement.textContent  = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
-        scaleElement.textContent       = `${scale.toFixed(0)}%`;
-        orientationElement.textContent = currentOrientation;
-        aspectRatioElement.textContent = aspectRatio;
+      if (!isPrimaryMonitor) {
+        fpsElement.textContent             = 'Canceled';
+        frameDurationElement.textContent   = 'Canceled';
+        refreshRateElement.textContent     = 'Canceled';
+        pixelsPerFrameElement.textContent  = 'Canceled';
+        pixelsPerSecondElement.textContent = 'Canceled';
+      } else {
+        fpsFrameCount++;
+        const elapsedTime = timestamp - fpsStartTime;
+        if (elapsedTime >= updateInterval) {
+          const fps = fpsFrameCount / (elapsedTime / 1000);
+          fpsFrameCount = 0;
+          fpsStartTime = timestamp;
 
-        const isPrimaryMonitor = (
-          window.screenX >= 0 &&
-          window.screenY >= 0 &&
-          screen.availWidth === screen.width
-        );
-        warningElement.style.display = isPrimaryMonitor ? 'none' : 'block';
+          fpsElement.textContent =
+            `${fps.toFixed(parseInt(decimalPlacesSelector.value, 10))} fps`;
 
-        const cDepthTotal = screen.colorDepth;
-        let bitsPerChannel = cDepthTotal / 3;
-        bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
-        bitDepthElement.textContent = bitsPerChannel + '-bit';
-
-        let colorSpaceDetected = 'Unknown';
-        if (window.matchMedia) {
-          if (window.matchMedia('(dynamic-range: high)').matches) {
-            colorSpaceDetected = 'HDR';
-          } else if (window.matchMedia('(dynamic-range: standard)').matches) {
-            colorSpaceDetected = 'SDR';
+          if (fps > 0) {
+            const frameDurationMs = 1000 / fps;
+            frameDurationElement.textContent =
+              `${frameDurationMs.toFixed(parseInt(decimalPlacesSelector.value, 10))} ms`;
+          } else {
+            frameDurationElement.textContent = '∞';
           }
         }
-        colorSpaceElement.textContent = colorSpaceDetected;
 
-        return isPrimaryMonitor;
+        frameTimes.push(timestamp);
+        if (frameTimes.length > 100) frameTimes.shift();
+        const intervals = frameTimes.slice(1).map((t, i) => t - frameTimes[i]);
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        const refreshRate = 1000 / avgInterval;
+
+        if (timestamp - lastUpdate >= updateInterval) {
+          refreshRateElement.textContent =
+            `${refreshRate.toFixed(parseInt(decimalPlacesSelector.value, 10))} Hz`;
+
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          const pixelsPerFrame = width * height;
+          const pixelsPerSecond = pixelsPerFrame * refreshRate;
+
+          pixelsPerFrameElement.textContent  = `${pixelsPerFrame.toLocaleString()} px`;
+          pixelsPerSecondElement.textContent = `${pixelsPerSecond.toLocaleString()} px/s`;
+
+          const newDuration = (60 / refreshRate).toFixed(2);
+          if (newDuration > 0.1 && newDuration < 10 && !isNaN(newDuration)) {
+            animationSquare.style.animationDuration   = newDuration + 's';
+            animationTriangle.style.animationDuration = newDuration + 's';
+            animationRect.style.animationDuration     = newDuration + 's';
+            animationPulse.style.animationDuration    = newDuration + 's';
+            animationColor.style.animationDuration    = newDuration + 's';
+          }
+          lastUpdate = timestamp;
+        }
       }
-
-      let frameTimes = [];
-      let fpsFrameCount = 0;
-      let fpsStartTime = performance.now();
-      let lastUpdate = 0;
-
-      function calculatePerformanceMetrics(timestamp) {
-        const isPrimaryMonitor = updateScreenDetails();
-
-        if (!isPrimaryMonitor) {
-          fpsElement.textContent             = 'Canceled';
-          frameDurationElement.textContent   = 'Canceled';
-          refreshRateElement.textContent     = 'Canceled';
-          pixelsPerFrameElement.textContent  = 'Canceled';
-          pixelsPerSecondElement.textContent = 'Canceled';
-        } else {
-          fpsFrameCount++;
-          const elapsedTime = timestamp - fpsStartTime;
-          if (elapsedTime >= updateInterval) {
-            const fps = fpsFrameCount / (elapsedTime / 1000);
-            fpsFrameCount = 0;
-            fpsStartTime = timestamp;
-
-            fpsElement.textContent =
-              `${fps.toFixed(parseInt(decimalPlacesSelector.value, 10))} fps`;
-
-            if (fps > 0) {
-              const frameDurationMs = 1000 / fps;
-              frameDurationElement.textContent =
-                `${frameDurationMs.toFixed(parseInt(decimalPlacesSelector.value, 10))} ms`;
-            } else {
-              frameDurationElement.textContent = '∞';
-            }
-          }
-
-          frameTimes.push(timestamp);
-          if (frameTimes.length > 100) frameTimes.shift();
-          const intervals = frameTimes.slice(1).map((t, i) => t - frameTimes[i]);
-          const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-          const refreshRate = 1000 / avgInterval;
-
-          if (timestamp - lastUpdate >= updateInterval) {
-            refreshRateElement.textContent =
-              `${refreshRate.toFixed(parseInt(decimalPlacesSelector.value, 10))} Hz`;
-
-            const width = screen.width * window.devicePixelRatio;
-            const height = screen.height * window.devicePixelRatio;
-            const pixelsPerFrame = width * height;
-            const pixelsPerSecond = pixelsPerFrame * refreshRate;
-
-            pixelsPerFrameElement.textContent  = `${pixelsPerFrame.toLocaleString()} px`;
-            pixelsPerSecondElement.textContent = `${pixelsPerSecond.toLocaleString()} px/s`;
-
-            const newDuration = (60 / refreshRate).toFixed(2);
-            if (newDuration > 0.1 && newDuration < 10 && !isNaN(newDuration)) {
-              animationSquare.style.animationDuration   = newDuration + 's';
-              animationTriangle.style.animationDuration = newDuration + 's';
-              animationRect.style.animationDuration     = newDuration + 's';
-              animationPulse.style.animationDuration    = newDuration + 's';
-              animationColor.style.animationDuration    = newDuration + 's';
-            }
-            lastUpdate = timestamp;
-          }
-        }
-        window.requestAnimationFrame(calculatePerformanceMetrics);
-      }
+      window.requestAnimationFrame(calculatePerformanceMetrics);
+    }
 
     fullscreenButton.addEventListener('click', () => {
       if (!document.fullscreenElement) {
@@ -445,7 +445,7 @@
     
     window.addEventListener('orientationchange', restartAnimations);
     window.addEventListener('resize', restartAnimations);
-      
+    
     window.requestAnimationFrame(animateBall);
     window.requestAnimationFrame(calculatePerformanceMetrics);
   })();
