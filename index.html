@@ -217,25 +217,25 @@
       }
     }
 
-    function createGhostBall(xPos) {
-      const ghost = document.createElement('div');
-      ghost.className = 'ghost-ball';
-      ghost.style.top = oneMsBall.style.top || 'calc(50% - 25px)';
-      ghost.style.left = `${xPos}px`;
-      oneMsContainer.appendChild(ghost);
-      ghostCount++;
+  function createGhostBall(xPos) {
+    const ghost = document.createElement('div');
+    ghost.className = 'ghost-ball';
+    ghost.style.top = oneMsBall.style.top || 'calc(50% - 25px)';
+    ghost.style.left = `${xPos}px`;
+    oneMsContainer.appendChild(ghost);
+    ghostCount++;
+    updateGhostCount();
+  
+    requestAnimationFrame(() => {
+      ghost.style.opacity = '0';
+    });
+  
+    setTimeout(() => {
+      ghost.remove();
+      ghostCount--;
       updateGhostCount();
-    
-      requestAnimationFrame(() => {
-        ghost.style.opacity = '0';
-      });
-    
-      setTimeout(() => {
-        ghost.remove();
-        ghostCount--;
-        updateGhostCount();
-      }, ghostLifetime);
-    }
+    }, ghostLifetime);
+  }
 
     function updateGhostCount() {
       ghostCountElem.textContent = `👻 Ghost Count: ${ghostCount}`;
@@ -269,15 +269,15 @@
       "11:9"   : 11 / 9,
       "1.91:1" : 1.91 / 1,
     };
-
-    let updateInterval = parseInt(updateIntervalSelector.value, 10);
-
-    updateIntervalSelector.addEventListener('change', (event) => {
-      updateInterval = parseInt(event.target.value, 10);
-      ghostLifetime = updateInterval;
-      duration = updateInterval;
-      startTime = null;
-    });
+    
+        let updateInterval = parseInt(updateIntervalSelector.value, 10);
+    
+         updateIntervalSelector.addEventListener('change', (event) => {
+         updateInterval = parseInt(event.target.value, 10);
+         ghostLifetime = updateInterval;
+         duration = updateInterval;
+         startTime = null;
+        });
 
     function findClosestAspectRatio(ratio, width, height) {
       let closestRatio = null;
@@ -293,8 +293,8 @@
     }
 
     function updateScreenDetails() {
-      const width  = window.innerWidth;
-      const height = window.innerHeight;
+      const width  = screen.width * window.devicePixelRatio;
+      const height = screen.height * window.devicePixelRatio;
       const scale  = window.devicePixelRatio * 100;
 
       let currentOrientation = "Unknown";
@@ -304,7 +304,7 @@
           : 'Portrait';
       }
 
-      const ratio       = Math.max(width, height) / Math.min(width, height);
+      const ratio       = width / height;
       const aspectRatio = findClosestAspectRatio(ratio, width, height);
 
       resolutionElement.textContent  = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
@@ -381,8 +381,8 @@
           refreshRateElement.textContent =
             `${refreshRate.toFixed(parseInt(decimalPlacesSelector.value, 10))} Hz`;
 
-          const width = window.innerWidth;
-          const height = window.innerHeight;
+          const width = screen.width * window.devicePixelRatio;
+          const height = screen.height * window.devicePixelRatio;
           const pixelsPerFrame = width * height;
           const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
@@ -403,52 +403,52 @@
       window.requestAnimationFrame(calculatePerformanceMetrics);
     }
 
-    fullscreenButton.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => console.error(err));
-        fullscreenButton.textContent = 'Exit Fullscreen';
-      } else {
-        document.exitFullscreen().catch(err => console.error(err));
-        fullscreenButton.textContent = 'Enter Fullscreen';
-      }
-    });
-
-    backgroundColorPicker.addEventListener('input', (event) => {
-      document.body.style.background =
-        `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
-    });
-
-    function restartAnimations() {
-      const newDistance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
-      if (newDistance !== distance) {
-        distance = newDistance;
-      }
-    
-      const animatedElements = [
-        animationSquare,
-        animationTriangle,
-        animationRect,
-        animationPulse,
-        animationColor,
-      ];
-    
-      animatedElements.forEach((element) => {
-        if (element) {
-          element.style.animation = 'none';
-          element.offsetHeight;
-          element.style.animation = '';
-        }
-      });
-    
-      startTime = null;
+  fullscreenButton.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => console.error(err));
+      fullscreenButton.textContent = 'Exit Fullscreen';
+    } else {
+      document.exitFullscreen().catch(err => console.error(err));
+      fullscreenButton.textContent = 'Enter Fullscreen';
     }
+  });
+
+  backgroundColorPicker.addEventListener('input', (event) => {
+    document.body.style.background =
+      `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
+  });
+
+  function restartAnimations() {
+    const newDistance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
+    if (newDistance !== distance) {
+      distance = newDistance;
+    }
+  
+    const animatedElements = [
+      animationSquare,
+      animationTriangle,
+      animationRect,
+      animationPulse,
+      animationColor,
+    ];
+  
+    animatedElements.forEach((element) => {
+      if (element) {
+        element.style.animation = 'none';
+        element.offsetHeight;
+        element.style.animation = '';
+      }
+    });
+  
+    startTime = null;
+  }
+  
+  window.addEventListener('orientationchange', restartAnimations);
+  window.addEventListener('resize', restartAnimations);
     
-    window.addEventListener('orientationchange', restartAnimations);
-    window.addEventListener('resize', restartAnimations);
-    
-    window.requestAnimationFrame(animateBall);
-    window.requestAnimationFrame(calculatePerformanceMetrics);
-  })();
+  window.requestAnimationFrame(animateBall);
+  window.requestAnimationFrame(calculatePerformanceMetrics);
+})();
 </script>
 </body>
 </html>
