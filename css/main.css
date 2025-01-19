@@ -53,7 +53,6 @@ h1 {
     position: relative;
     border-radius: 6px;
     overflow: hidden;
-    will-change: transform,background-color
 }
 
 #animation-square {
