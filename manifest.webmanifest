@@ -9,5 +9,5 @@
   "theme_color": "#2d2d2d",
   "background_color": "#2d2d2d",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
+  "display_override": ["window-controls-overlay", "standalone"]
 }
