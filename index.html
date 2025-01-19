@@ -564,9 +564,10 @@ th {
          startTime = null;
         });
 
-    function findClosestAspectRatio(ratio, width, height) {
+      function findClosestAspectRatio(ratio, width, height) {
       let closestRatio = null;
       let smallestDiff = Infinity;
+
       for (const [key, value] of Object.entries(aspectRatios)) {
         const diff = Math.abs(value - ratio);
         if (diff < smallestDiff) {
@@ -574,53 +575,58 @@ th {
           smallestDiff = diff;
         }
       }
-      return (smallestDiff < 0.01) ? closestRatio : `${width}:${height}`;
+
+      return smallestDiff < 0.01 ? closestRatio : `${width}:${height}`;
     }
 
     function updateScreenDetails() {
-      const width  = screen.width * window.devicePixelRatio;
-      const height = screen.height * window.devicePixelRatio;
-      const scale  = window.devicePixelRatio * 100;
+    let width = screen.width * window.devicePixelRatio;
+    let height = screen.height * window.devicePixelRatio;
 
-      let currentOrientation = "Unknown";
-      if (screen.orientation && screen.orientation.type) {
-        currentOrientation = screen.orientation.type.includes('landscape')
-          ? 'Landscape'
-          : 'Portrait';
-      }
-
-      const ratio       = width / height;
-      const aspectRatio = findClosestAspectRatio(ratio, width, height);
-
-      resolutionElement.textContent  = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
-      scaleElement.textContent       = `${scale.toFixed(0)}%`;
-      orientationElement.textContent = currentOrientation;
-      aspectRatioElement.textContent = aspectRatio;
-
-      const isPrimaryMonitor = (
-        window.screenX >= 0 &&
-        window.screenY >= 0 &&
-        screen.availWidth === screen.width
-      );
-      warningElement.style.display = isPrimaryMonitor ? 'none' : 'block';
-
-      const cDepthTotal = screen.colorDepth;
-      let bitsPerChannel = cDepthTotal / 3;
-      bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
-      bitDepthElement.textContent = bitsPerChannel + '-bit';
-
-      let colorSpaceDetected = 'Unknown';
-      if (window.matchMedia) {
-        if (window.matchMedia('(dynamic-range: high)').matches) {
-          colorSpaceDetected = 'HDR';
-        } else if (window.matchMedia('(dynamic-range: standard)').matches) {
-          colorSpaceDetected = 'SDR';
-        }
-      }
-      colorSpaceElement.textContent = colorSpaceDetected;
-
-      return isPrimaryMonitor;
+    let currentOrientation = "Unknown";
+    if (screen.orientation && screen.orientation.type) {
+      currentOrientation = screen.orientation.type.includes("landscape")
+        ? "Landscape"
+        : "Portrait";
+    } else {
+      currentOrientation = width > height ? "Landscape" : "Portrait";
     }
+
+    if (currentOrientation === "Portrait") {
+      [width, height] = [height, width];
+    }
+
+    const ratio = width / height;
+    const aspectRatio = findClosestAspectRatio(ratio, width, height);
+
+    resolutionElement.textContent = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
+    scaleElement.textContent = `${(window.devicePixelRatio * 100).toFixed(0)}%`;
+    orientationElement.textContent = currentOrientation;
+    aspectRatioElement.textContent = aspectRatio;
+
+    const isPrimaryMonitor =
+      window.screenX >= 0 &&
+      window.screenY >= 0 &&
+      screen.availWidth === screen.width;
+    warningElement.style.display = isPrimaryMonitor ? "none" : "block";
+
+    const cDepthTotal = screen.colorDepth;
+    let bitsPerChannel = cDepthTotal / 3;
+    bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
+    bitDepthElement.textContent = bitsPerChannel + "-bit";
+
+    let colorSpaceDetected = "Unknown";
+    if (window.matchMedia) {
+      if (window.matchMedia("(dynamic-range: high)").matches) {
+        colorSpaceDetected = "HDR";
+      } else if (window.matchMedia("(dynamic-range: standard)").matches) {
+        colorSpaceDetected = "SDR";
+      }
+    }
+    colorSpaceElement.textContent = colorSpaceDetected;
+
+    return isPrimaryMonitor;
+  }
 
     let frameTimes = [];
     let fpsFrameCount = 0;
