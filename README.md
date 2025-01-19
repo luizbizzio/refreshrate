@@ -1,7 +1,7 @@
-# Refresh Rate App 🖥️🔃
+# Refresh Rate Test 🖥️🔃
 ## Overview 🚀
 
-[Refresh Rate App](https://refreshrate.app) is your go-to tool for real-time monitoring of your screen's refresh rate and performance metrics. Whether you're a gamer, developer, or just curious about your display's capabilities, our app helps you optimize your settings for the smoothest visual experience.
+[Refresh Rate Test](https://refreshrate.app) is your go-to tool for real-time monitoring of your screen's refresh rate and performance metrics. Whether you're a gamer, developer, or just curious about your display's capabilities, our app helps you optimize your settings for the smoothest visual experience.
 
 - **📱 Cross-Platform:** Works seamlessly on both mobile and desktop devices.
 - **🌐 Offline Access:** Install as a web app and use it without an internet connection.
@@ -48,7 +48,7 @@
 
 ### Ghost Count Magic 👻
 
-Ever wondered how smooth your screen feels? **Refresh Rate App** uses our **Ghost Count** feature to show you in a fun and visual way! Here’s how it works:
+Ever wondered how smooth your screen feels? **Refresh Rate Test** uses our **Ghost Count** feature to show you in a fun and visual way! Here’s how it works:
 
 - **👻 Ghost Images:** Imagine a ball moving across your screen, leaving behind faint, transparent copies of itself. These are the "ghost" images!
 
@@ -85,7 +85,7 @@ Let’s break it down with some simple math and examples!
 
 ### Dynamic Ghost Count Options 🎯
 
-**Refresh Rate App** lets you choose how fast the ball crosses the screen. Here's what happens:
+**Refresh Rate Test** lets you choose how fast the ball crosses the screen. Here's what happens:
 
 - **🔹 Example on a 60Hz Screen with 60FPS:**
   - **1000ms Traversal Time:**
