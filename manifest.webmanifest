@@ -2,6 +2,20 @@
   "name": "Refresh Rate Test",
   "short_name": "Refresh Rate App",
   "start_url": "/",
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-screenshot.jpg",
+      "sizes": "2800x1600",
+      "type": "image/jpg",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/mobile-screenshot.jpg",
+      "sizes": "1600x2670",
+      "type": "image/jpg",
+      "form_factor": "narrow"
+    }
+  ],
   "icons": [
     { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
     { "src": "/icon.png", "type": "image/png", "sizes": "512x512" }
