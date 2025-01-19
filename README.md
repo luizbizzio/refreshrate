@@ -1,5 +1,5 @@
-# Refresh Rate App 🔃
-## About 🌟
+# Refresh Rate App 🖥️🔃
+## Overview 🚀
 
 [Refresh Rate App](https://refreshrate.app) is your go-to tool for real-time monitoring of your screen's refresh rate and performance metrics. Whether you're a gamer, developer, or just curious about your display's capabilities, our app helps you optimize your settings for the smoothest visual experience.
 
