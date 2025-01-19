@@ -26,9 +26,9 @@
 
 ---
 
-## 🧪 How It Works
+## How It Works 🧪
 
-### 👻 Ghost Count Magic
+### Ghost Count Magic 👻
 
 Ever wondered how smooth your screen feels? **Refresh Rate App** uses our **Ghost Count** feature to show you in a fun and visual way! Here’s how it works:
 
@@ -42,7 +42,9 @@ Ever wondered how smooth your screen feels? **Refresh Rate App** uses our **Ghos
   - **Higher FPS:** The app renders more frames each second, creating more ghost images for fluid motion.
   - **Lower FPS:** Fewer frames per second result in fewer ghost images, making motion look choppy.
 
-### 🧠 The Science Behind the Fun
+---
+
+### The Science Behind the Fun 🧠
 
 Let’s break it down with some simple math and examples!
 
@@ -59,9 +61,11 @@ Let’s break it down with some simple math and examples!
 
 3. **Traversal Time Options:**
    - **Traversal Time:** How quickly the ball moves across the screen.
-   - **Options:** 50ms, 100ms, 250ms, 500ms, and 1000ms.
+   - **Options:** 50ms, 100ms, 250ms, 500ms, and **1000ms**.
 
-### 🎯 Dynamic Ghost Count Options
+---
+
+### Dynamic Ghost Count Options 🎯
 
 **Refresh Rate App** lets you choose how fast the ball crosses the screen. Here's what happens:
 
@@ -81,16 +85,16 @@ Let’s break it down with some simple math and examples!
     - **Calculation:** 50ms / 11.11ms per frame ≈ **5 ghosts**
     - **What It Means:** The ball crosses the screen in 50ms, leaving 5 ghost images.
 
-### 🧮 Quick Example Scenarios
+### Quick Example Scenarios 🧮
 
 | **Traversal Time** | **Monitor Refresh Rate (Hz)** | **FPS** | **Number of Ghosts** | **Time Represented** |
 |--------------------|-------------------------------|---------|-----------------------|-----------------------|
 | 50ms               | 60Hz                          | 60FPS   | 3                     | 50ms                  |
 | 1000ms             | 60Hz                          | 60FPS   | 60                    | 1000ms (1 second)     |
-| 50ms               | 90Hz                          | 90FPS   | 5                     | 50ms                  |
-| 1000ms             | 90Hz                          | 90FPS   | 90                    | 1000ms (1 second)     |
+| 50ms               | 240Hz                          | 240FPS   | 120                     | 50ms                  |
+| 1000ms             | 240Hz                          | 240FPS   | 240                    | 1000ms (1 second)     |
 
-### 💡 Takeaway
+### Takeaway 💡
 
 - **More Ghosts = Smoother Motion:** Higher refresh rates and FPS create more ghost images, making motion appear fluid.
 - **Fewer Ghosts = Snappier Motion:** Faster traversal times with fewer ghosts make animations look quicker and more responsive.
