@@ -413,11 +413,11 @@
     }
   });
 
-  backgroundColorPicker.addEventListener('input', (event) => {
-    document.body.style.background =
-      `linear-gradient(to bottom, ${event.target.value}, #1b1b1b)`;
-  });
 
+  backgroundColorPicker.addEventListener('input', (event) => {
+      document.getElementById('animation-color').style.backgroundColor = event.target.value;
+  });
+      
   function restartAnimations() {
     const newDistance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
     if (newDistance !== distance) {
