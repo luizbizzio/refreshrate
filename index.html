@@ -672,7 +672,7 @@ th {
           const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
           pixelsPerFrameElement.textContent  = `${pixelsPerFrame.toLocaleString()} px`;
-          pixelsPerSecondElement.textContent = `${pixelsPerSecond.toFixed(0).toLocaleString()} px/s`;
+          pixelsPerSecondElement.textContent = `${Math.round(pixelsPerSecond).toLocaleString()} px/s`;
 
           const newDuration = (60 / refreshRate).toFixed(2);
           if (newDuration > 0.1 && newDuration < 10 && !isNaN(newDuration)) {
