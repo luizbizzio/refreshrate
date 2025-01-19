@@ -128,7 +128,6 @@ h1 {
 }
 
 #animation-color {
-    background-color: #2196f3;
     animation: colorShift 3s linear infinite
 }
 
