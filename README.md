@@ -26,6 +26,24 @@
 
 ---
 
+## Usage 🖥️
+
+1. **🔗 Access the Tool:**
+   - Open [https://refreshrate.app](https://refreshrate.app) on your device.
+
+2. **🛠️ Navigate the Interface:**
+   - **✨ Animations:** Watch visual elements react to your screen's refresh rate.
+   - **👻 Ghost Count:** Observe the number of ghost images to assess your monitor's performance.
+   - **🎛️ Controls:** Customize settings like background color, decimal places, and update intervals to suit your preferences.
+
+3. **🔲 Fullscreen Mode:**
+   - Click the **Enter Fullscreen** button to maximize the view and enhance your monitoring experience.
+
+4. **📥 Offline Access:**
+   - Install the web app to continue using **Refresh Rate App** without an internet connection.
+
+---
+
 ## How It Works 🧪
 
 ### Ghost Count Magic 👻
@@ -100,24 +118,6 @@ Let’s break it down with some simple math and examples!
 - **Fewer Ghosts = Snappier Motion:** Faster traversal times with fewer ghosts make animations look quicker and more responsive.
 
 By adjusting the traversal time, you can see how your monitor's refresh rate and the app's FPS work together to create different visual experiences. It’s like having a little ghost tracker showing you exactly how smooth your display is!
-
----
-
-## Usage 🖥️
-
-1. **🔗 Access the Tool:**
-   - Open [https://refreshrate.app](https://refreshrate.app) on your device.
-
-2. **🛠️ Navigate the Interface:**
-   - **✨ Animations:** Watch visual elements react to your screen's refresh rate.
-   - **👻 Ghost Count:** Observe the number of ghost images to assess your monitor's performance.
-   - **🎛️ Controls:** Customize settings like background color, decimal places, and update intervals to suit your preferences.
-
-3. **🔲 Fullscreen Mode:**
-   - Click the **Enter Fullscreen** button to maximize the view and enhance your monitoring experience.
-
-4. **📥 Offline Access:**
-   - Install the web app to continue using **Refresh Rate App** without an internet connection.
 
 ---
 
