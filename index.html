@@ -718,12 +718,8 @@ td:nth-child(2) {
                   <td id="aspect-ratio">Calculating...</td>
                 </tr>
                 <tr>
-                  <td>Resolution (OS reported)</td>
+                  <td>Screen Resolution</td>
                   <td id="resolution">Calculating...</td>
-                </tr>
-                <tr>
-                  <td>Viewport (CSS × DPR)</td>
-                  <td id="viewport-resolution">Calculating...</td>
                 </tr>
                 <tr>
                   <td>Scale (System)</td>
@@ -839,7 +835,6 @@ td:nth-child(2) {
   const pixelsPerSecondElement = document.getElementById('pixels-per-second');
   const aspectRatioElement     = document.getElementById('aspect-ratio');
   const resolutionElement      = document.getElementById('resolution');
-  const viewportResolutionElement = document.getElementById('viewport-resolution');
   const scaleElement           = document.getElementById('scale');
   const orientationElement     = document.getElementById('orientation');
   const bitDepthElement        = document.getElementById('bit-depth');
@@ -891,8 +886,10 @@ td:nth-child(2) {
 
   let customPreview = null;
   let maxDetectedRefreshRate = 0;
-  let lastViewportWidth = 0;
-  let lastViewportHeight = 0;
+
+  let panelWidth = 0;
+  let panelHeight = 0;
+  let panelDpr = window.devicePixelRatio || 1;
 
   function recalcTrackDistances() {
     tracks.forEach(function (track) {
@@ -987,22 +984,13 @@ td:nth-child(2) {
   }
 
   function updateScreenDetails() {
+    panelDpr = window.devicePixelRatio || 1;
+
     const logicalWidth  = window.screen.width;
     const logicalHeight = window.screen.height;
-    const dpr = window.devicePixelRatio || 1;
 
-    const ratio = logicalWidth / logicalHeight;
-    const aspectRatio = findClosestAspectRatio(ratio, logicalWidth, logicalHeight);
-
-    resolutionElement.textContent = logicalWidth + " x " + logicalHeight + " px";
-    scaleElement.textContent = (dpr * 100).toFixed(0) + "%";
-    aspectRatioElement.textContent = aspectRatio;
-
-    const viewportWidth  = Math.round(window.innerWidth * dpr);
-    const viewportHeight = Math.round(window.innerHeight * dpr);
-    viewportResolutionElement.textContent = viewportWidth + " x " + viewportHeight + " px";
-    lastViewportWidth = viewportWidth;
-    lastViewportHeight = viewportHeight;
+    let width = logicalWidth * panelDpr;
+    let height = logicalHeight * panelDpr;
 
     let currentOrientation = "Unknown";
     if (screen.orientation && screen.orientation.type) {
@@ -1012,6 +1000,22 @@ td:nth-child(2) {
     } else {
       currentOrientation = logicalWidth >= logicalHeight ? "Landscape" : "Portrait";
     }
+
+    if (currentOrientation === "Portrait") {
+      const tmp = width;
+      width = height;
+      height = tmp;
+    }
+
+    panelWidth = width;
+    panelHeight = height;
+
+    const ratio = width / height;
+    const aspectRatio = findClosestAspectRatio(ratio, width, height);
+
+    resolutionElement.textContent = width.toFixed(0) + " x " + height.toFixed(0) + " px";
+    scaleElement.textContent = (panelDpr * 100).toFixed(0) + "%";
+    aspectRatioElement.textContent = aspectRatio;
     orientationElement.textContent = currentOrientation;
 
     const isPrimaryMonitor =
@@ -1280,8 +1284,14 @@ td:nth-child(2) {
         if (timestamp - lastUpdate >= updateInterval) {
           refreshRateElement.textContent = refreshRate.toFixed(decimals) + ' Hz';
 
-          const width = lastViewportWidth || screen.width;
-          const height = lastViewportHeight || screen.height;
+          const dpr = panelDpr || window.devicePixelRatio || 1;
+          let width = panelWidth;
+          let height = panelHeight;
+          if (!width || !height) {
+            width = screen.width * dpr;
+            height = screen.height * dpr;
+          }
+
           const pixelsPerFrame = width * height;
           const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
