@@ -449,7 +449,6 @@ td:nth-child(2) {
   text-decoration: underline;
 }
 
-/* Compress layout on low-height PC screens (e.g., 1366x768) */
 @media (max-height: 800px) {
   .app {
     padding: 10px 12px 8px;
@@ -719,8 +718,12 @@ td:nth-child(2) {
                   <td id="aspect-ratio">Calculating...</td>
                 </tr>
                 <tr>
-                  <td>Screen Resolution</td>
+                  <td>Resolution (OS reported)</td>
                   <td id="resolution">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Viewport (CSS × DPR)</td>
+                  <td id="viewport-resolution">Calculating...</td>
                 </tr>
                 <tr>
                   <td>Scale (System)</td>
@@ -836,6 +839,7 @@ td:nth-child(2) {
   const pixelsPerSecondElement = document.getElementById('pixels-per-second');
   const aspectRatioElement     = document.getElementById('aspect-ratio');
   const resolutionElement      = document.getElementById('resolution');
+  const viewportResolutionElement = document.getElementById('viewport-resolution');
   const scaleElement           = document.getElementById('scale');
   const orientationElement     = document.getElementById('orientation');
   const bitDepthElement        = document.getElementById('bit-depth');
@@ -887,7 +891,8 @@ td:nth-child(2) {
 
   let customPreview = null;
   let maxDetectedRefreshRate = 0;
-  const dpr = window.devicePixelRatio || 1;
+  let lastViewportWidth = 0;
+  let lastViewportHeight = 0;
 
   function recalcTrackDistances() {
     tracks.forEach(function (track) {
@@ -982,8 +987,22 @@ td:nth-child(2) {
   }
 
   function updateScreenDetails() {
-    const cssWidth  = screen.width;
-    const cssHeight = screen.height;
+    const logicalWidth  = window.screen.width;
+    const logicalHeight = window.screen.height;
+    const dpr = window.devicePixelRatio || 1;
+
+    const ratio = logicalWidth / logicalHeight;
+    const aspectRatio = findClosestAspectRatio(ratio, logicalWidth, logicalHeight);
+
+    resolutionElement.textContent = logicalWidth + " x " + logicalHeight + " px";
+    scaleElement.textContent = (dpr * 100).toFixed(0) + "%";
+    aspectRatioElement.textContent = aspectRatio;
+
+    const viewportWidth  = Math.round(window.innerWidth * dpr);
+    const viewportHeight = Math.round(window.innerHeight * dpr);
+    viewportResolutionElement.textContent = viewportWidth + " x " + viewportHeight + " px";
+    lastViewportWidth = viewportWidth;
+    lastViewportHeight = viewportHeight;
 
     let currentOrientation = "Unknown";
     if (screen.orientation && screen.orientation.type) {
@@ -991,25 +1010,9 @@ td:nth-child(2) {
         ? "Landscape"
         : "Portrait";
     } else {
-      currentOrientation = cssWidth >= cssHeight ? "Landscape" : "Portrait";
+      currentOrientation = logicalWidth >= logicalHeight ? "Landscape" : "Portrait";
     }
-
-    let width  = Math.round(cssWidth * dpr);
-    let height = Math.round(cssHeight * dpr);
-
-    if (currentOrientation === "Portrait" && width > height) {
-      const tmp = width;
-      width = height;
-      height = tmp;
-    }
-
-    const ratio = width / height;
-    const aspectRatio = findClosestAspectRatio(ratio, width, height);
-
-    resolutionElement.textContent = width + " x " + height + " px";
-    scaleElement.textContent = (dpr * 100).toFixed(0) + "%";
     orientationElement.textContent = currentOrientation;
-    aspectRatioElement.textContent = aspectRatio;
 
     const isPrimaryMonitor =
       window.screenX >= 0 &&
@@ -1277,10 +1280,8 @@ td:nth-child(2) {
         if (timestamp - lastUpdate >= updateInterval) {
           refreshRateElement.textContent = refreshRate.toFixed(decimals) + ' Hz';
 
-          const cssWidth = screen.width;
-          const cssHeight = screen.height;
-          const width = Math.round(cssWidth * dpr);
-          const height = Math.round(cssHeight * dpr);
+          const width = lastViewportWidth || screen.width;
+          const height = lastViewportHeight || screen.height;
           const pixelsPerFrame = width * height;
           const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
