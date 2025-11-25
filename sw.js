@@ -11,6 +11,7 @@ const urlsToCache = [
   '/humans.txt',
   '/screenshots/desktop/screenshot.jpg',
   '/screenshots/mobile-screenshot.jpg',
+  '/ghost.svg',
 ];
 
 self.addEventListener('install', (event) => {
