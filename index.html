@@ -981,8 +981,8 @@ td:nth-child(2) {
   }
 
   function updateScreenDetails() {
-    let width = screen.width * window.devicePixelRatio;
-    let height = screen.height * window.devicePixelRatio;
+    let width  = screen.width;
+    let height = screen.height;
 
     let currentOrientation = "Unknown";
     if (screen.orientation && screen.orientation.type) {
@@ -992,17 +992,10 @@ td:nth-child(2) {
     } else {
       currentOrientation = width > height ? "Landscape" : "Portrait";
     }
-
-    if (currentOrientation === "Portrait") {
-      const tmp = width;
-      width = height;
-      height = tmp;
-    }
-
     const ratio = width / height;
     const aspectRatio = findClosestAspectRatio(ratio, width, height);
 
-    resolutionElement.textContent = width.toFixed(0) + " x " + height.toFixed(0) + " px";
+    resolutionElement.textContent = width + " x " + height + " px";
     scaleElement.textContent = (window.devicePixelRatio * 100).toFixed(0) + "%";
     orientationElement.textContent = currentOrientation;
     aspectRatioElement.textContent = aspectRatio;
