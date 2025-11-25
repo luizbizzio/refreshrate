@@ -1266,10 +1266,10 @@ td:nth-child(2) {
         if (timestamp - lastUpdate >= updateInterval) {
           refreshRateElement.textContent = refreshRate.toFixed(decimals) + ' Hz';
 
-          const width = screen.width * window.devicePixelRatio;
-          const height = screen.height * window.devicePixelRatio;
-          const pixelsPerFrame = width * height;
-          const pixelsPerSecond = pixelsPerFrame * refreshRate;
+			const width = screen.width;
+			const height = screen.height;
+			const pixelsPerFrame = width * height;
+			const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
           pixelsPerFrameElement.textContent = pixelsPerFrame.toLocaleString() + ' px';
           pixelsPerSecondElement.textContent = Math.round(pixelsPerSecond).toLocaleString() + ' px/s';
