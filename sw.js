@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cache-v1';
+const CACHE_NAME = 'cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -9,8 +9,7 @@ const urlsToCache = [
   '/robots.txt',
   '/sw.js',
   '/humans.txt',
-  '/screenshots/desktop/screenshot.jpg',
-  '/screenshots/mobile-screenshot.jpg',
+  '/screenshot.webp',
   '/ghost.svg',
 ];
 
