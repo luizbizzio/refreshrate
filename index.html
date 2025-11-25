@@ -32,11 +32,11 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Refresh Rate - Monitor &amp; Optimize Display">
-  <meta name="twitter:description" content="RefreshRate.app offers real-time monitoring and analysis of your screen's refresh rate and system performance metrics, helping you optimize your display settings for the smoothest visual experience.">
+  <meta name="twitter:description" content="RefreshRate.app provides real-time monitoring and analysis of your screen's refresh rate and system performance metrics, helping you optimize your display settings for the smoothest visual experience.">
   <meta name="twitter:image" content="https://refreshrate.app/icon.png">
   
-  <meta name="theme-color" content="#2d2d2d">
-  <meta name="msapplication-navbutton-color" content="#2d2d2d">
+  <meta name="theme-color" content="#050509">
+  <meta name="msapplication-navbutton-color" content="#050509">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -46,7 +46,7 @@
     "@context":"https://schema.org",
     "@type":"WebSite",
     "name":"Refresh Rate App",
-	"description": "RefreshRate.app offers real-time monitoring and analysis of your screen's refresh rate and system performance metrics, helping you optimize your display settings for the smoothest visual experience.",
+    "description": "RefreshRate.app provides real-time monitoring and analysis of your screen's refresh rate and system performance metrics, helping you optimize your display settings for the smoothest visual experience.",
     "url":"https://refreshrate.app/",
     "publisher":{
       "@type":"Organization",
@@ -57,549 +57,936 @@
   </script>	
 	
 <style>
-body {
-	font-family: Arial, sans-serif;
-	background-color: #2d2d2d;
-	color: #e0e0e0;
-	margin: 0;
-	padding: 0;
-	transition: background .3s ease
+:root {
+  --bg: #050509;
+  --surface: #080810;
+  --surface-alt: #101018;
+  --border: #262637;
+  --accent: #4caf50;
+  --accent-soft: #66bb6a;
+  --text: #f5f5f5;
+  --text-muted: #9ca3af;
 }
 
-h1 {
-	margin: 10px 0 10px;
-	font-size: 2em;
-	text-transform: uppercase;
-	color: #4caf50;
-	text-shadow: 2px 2px 5px #000;
-	text-align: center
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top left, rgba(76, 175, 80, 0.12), transparent 55%), var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 16px;
+  gap: 16px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-header-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.app-header-sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 #fullscreen-button {
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	background: linear-gradient(135deg, #4caf50, #2e7d32);
-	border: 0;
-	color: #fff;
-	padding: 10px 20px;
-	border-radius: 25px;
-	font-size: 1em;
-	cursor: pointer;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
-	transition: all .3s ease;
-	z-index: 1001
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #101018;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 #fullscreen-button:hover {
-	background: linear-gradient(135deg, #66bb6a, #388e3c);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, .3)
+  border-color: var(--accent);
+  background: #141420;
 }
 
-#animations-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	margin: 20px auto;
-	max-width: 1000px
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
+  gap: 20px;
+  min-height: 0;
 }
 
-.animation-box {
-	width: 80px;
-	height: 80px;
-	margin: 20px;
-	position: relative;
-	border-radius: 6px;
-	overflow: hidden
+.panel {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
 }
 
-#animation-square {
-	background-color: #4caf50;
-	animation: rotateSquare 2s linear infinite
+.panel-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
 }
 
-@keyframes rotateSquare {
-	0% {
-		transform: rotate(0)
-	}
-
-	to {
-		transform: rotate(360deg)
-	}
+.motion-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
 }
 
-#animation-triangle {
-	width: 0;
-	height: 0;
-	border-left: 40px solid transparent;
-	border-right: 40px solid transparent;
-	border-bottom: 60px solid #ff9800;
-	animation: moveTriangle 3s ease-in-out infinite
+.tracks-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-@keyframes moveTriangle {
-	0% {
-		transform: translateX(-30px)
-	}
-
-	50% {
-		transform: translateX(30px)
-	}
-
-	to {
-		transform: translateX(-30px)
-	}
+.track-row {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
 }
 
-#animation-rectangle {
-	width: 80px;
-	height: 40px;
-	background-color: #f44336;
-	animation: bounceRect 1.5s ease-in-out infinite
+.track-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-@keyframes bounceRect {
-
-	0%,
-	to {
-		transform: translateY(0)
-	}
-
-	50% {
-		transform: translateY(-30px)
-	}
+.track-label {
+  width: 110px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
-#animation-pulse {
-	border-radius: 50%;
-	background-color: #9c27b0;
-	animation: pulseCircle 2s ease-in-out infinite
+.track-label-main {
+  font-size: 12px;
+  color: var(--text);
 }
 
-@keyframes pulseCircle {
-
-	0%,
-	to {
-		transform: scale(1)
-	}
-
-	50% {
-		transform: scale(1.5)
-	}
+.track-label-sub {
+  font-size: 10px;
 }
 
-#animation-color {
-	animation: colorShift 3s linear infinite
+.track-line {
+  position: relative;
+  flex: 1;
+  height: 64px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  overflow: hidden;
 }
 
-@keyframes colorShift {
-	0% {
-		background-color: #2196f3
-	}
-
-	25% {
-		background-color: #e91e63
-	}
-
-	50% {
-		background-color: #ffeb3b
-	}
-
-	75% {
-		background-color: #4caf50
-	}
-
-	to {
-		background-color: #2196f3
-	}
+.track-ball {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 16px rgba(76, 175, 80, 0.9);
 }
 
-#one-ms-container {
-	position: relative;
-	max-width: 800px;
-	width: calc(100% - 30px);
-	height: 60px;
-	margin: 0 auto;
-	border: 2px dashed #aaa;
-	border-radius: 6px;
+.track-ghost-info {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding-right: 4px;
 }
 
-
-#one-ms-ball {
-	position: absolute;
-	top: 2.5px;
-	left: 0;
-	width: 50px;
-	height: 50px;
-	background: red;
-	border-radius: 50%;
-	border: 2px dashed #000;
+.motion-hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
-.ghost-ball {
-	position: absolute;
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	background: orange;
-	opacity: .15;
-	pointer-events: none;
-	border: 3px dashed #000;
-	transition: opacity .3s
-}
-
-#ball-info {
-	text-align: center;
-	font-size: 1.1em;
-	margin-top: 10px;
-	color: #ffe680;
-  	padding: 0 10px
-}
-
-table {
-	margin: 10px auto;
-	border-collapse: collapse;
-	width: 90%;
-	max-width: 1000px;
-	background-color: #3c3c3c;
-	color: #e0e0e0;
-	table-layout: fixed;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, .5);
-	border-radius: 8px;
-	overflow: hidden
-}
-
-td,
-th {
-	padding: 13px;
-	text-align: left;
-	border-bottom: 1px solid #555
-}
-
-th {
-	background-color: #444;
-	text-transform: uppercase;
-	font-weight: 700
+.metrics-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
 }
 
 #controls {
-	margin: 20px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 20px
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#controls label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
 }
 
 #controls input[type=color] {
-	border: 0;
-	padding: 5px;
-	cursor: pointer
+  width: 26px;
+  height: 18px;
+  border-radius: 999px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 #controls select {
-	padding: 5px 10px;
-	border: 1px solid #555;
-	background-color: #3c3c3c;
-	color: #fff;
-	border-radius: 5px;
-	cursor: pointer
-}
-
-#ghost-count {
-	text-align: center;
-	font-size: 1.2em;
-	color: gold;
-	margin-bottom: 20px
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #111118;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
 }
 
 #warning {
-	margin: 20px auto;
-	font-size: 1.2em;
-	color: #f44336;
-	font-weight: 700;
-	background-color: #ffcccb;
-	border: 2px solid #d32f2f;
-	border-radius: 8px;
-	padding: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
-	text-align: center;
-	max-width: 600px;
-	display: none
+  margin-top: 6px;
+  font-size: 11px;
+  color: #f97373;
+  background-color: rgba(248, 113, 113, 0.08);
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: none;
 }
 
-#footer {
-	margin-top: 0;
-	text-align: center;
-	color: #aaa;
-	font-size: .9em;
-	padding: 5px
+.metrics-table {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
-#footer a {
-  color: lime
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
 }
 
-@media (max-width:768px) {
-	#fullscreen-button {
-		display: none
-	}
+thead tr {
+  background: #111118;
+}
+
+th,
+td {
+  padding: 8px 11px;
+  text-align: left;
+  border-bottom: 1px solid #1e1e28;
+}
+
+th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+tbody tr:nth-child(odd) td {
+  background: #101018;
+}
+
+tbody tr:nth-child(even) td {
+  background: #0d0d14;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+td:nth-child(1) {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+td:nth-child(2) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+}
+
+.fps-preview {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fps-preview-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+.fps-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fps-preview-row {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.fps-preview-label {
+  width: 140px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.fps-preview-line {
+  position: relative;
+  flex: 1;
+  height: 42px;
+  border-radius: 999px;
+  background: #111118;
+  overflow: hidden;
+}
+
+.fps-preview-dot {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fps-preview-dot img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fps-preview-hint {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.app-footer {
+  margin-top: 2px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.app-footer a {
+  color: var(--accent-soft);
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Compress layout on low-height PC screens (e.g., 1366x768) */
+@media (max-height: 800px) {
+  .app {
+    padding: 10px 12px 8px;
+    gap: 8px;
+  }
+
+  .app-header-title {
+    font-size: 18px;
+  }
+
+  .app-header-sub {
+    font-size: 11px;
+  }
+
+  #fullscreen-button {
+    padding: 6px 14px;
+    font-size: 10px;
+  }
+
+  .panel {
+    padding: 10px 10px 8px;
+    gap: 8px;
+  }
+
+  .motion-panel-content,
+  .metrics-panel-content {
+    gap: 8px;
+  }
+
+  .track-line {
+    height: 48px;
+  }
+
+  .track-ball {
+    top: 8px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .fps-preview-line {
+    height: 32px;
+  }
+
+  .fps-preview-dot {
+    top: 4px;
+    width: 24px;
+    height: 24px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 6px 8px;
+  }
+
+  td:nth-child(1) {
+    font-size: 11px;
+  }
+
+  td:nth-child(2) {
+    font-size: 12px;
+  }
+
+  .app-footer {
+    font-size: 10px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .app {
+    padding: 16px 14px 12px;
+  }
+
+  .app-main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, auto);
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #fullscreen-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .track-label {
+    width: 90px;
+  }
 }
 </style>
   
 </head>
 <body>
+  <div class="app">
+    <header class="app-header">
+      <div class="app-header-main">
+        <h1 class="app-header-title">Refresh Rate Test</h1>
+        <p class="app-header-sub">Time-based lanes driven by your effective refresh rate.</p>
+      </div>
+      <button id="fullscreen-button">Fullscreen</button>
+    </header>
 
-  <button id="fullscreen-button">Enter Fullscreen</button>
-  <h1>Refresh Rate Test<br>Monitor &amp; Optimize Display</h1>
+    <main class="app-main">
+      <section class="panel">
+        <div class="panel-header">Motion Tracks</div>
+        <div class="motion-panel-content">
+          <div class="tracks-list">
+            <div class="track-row" data-duration="50">
+              <div class="track-main">
+                <div class="track-label">
+                  <span class="track-label-main">50 ms</span>
+                  <span class="track-label-sub">Ultra fast</span>
+                </div>
+                <div class="track-line">
+                  <div class="track-ball"></div>
+                </div>
+              </div>
+              <div class="track-ghost-info">
+                <span>Expected ghosts:</span>
+                <span class="track-ghost-value">Measuring…</span>
+              </div>
+            </div>
 
-  <div id="animations-container">
-    <div class="animation-box" id="animation-square"></div>
-    <div class="animation-box" id="animation-triangle"></div>
-    <div class="animation-box" id="animation-rectangle"></div>
-    <div class="animation-box" id="animation-pulse"></div>
-    <div class="animation-box" id="animation-color"></div>
+            <div class="track-row" data-duration="100">
+              <div class="track-main">
+                <div class="track-label">
+                  <span class="track-label-main">100 ms</span>
+                  <span class="track-label-sub">Very fast</span>
+                </div>
+                <div class="track-line">
+                  <div class="track-ball"></div>
+                </div>
+              </div>
+              <div class="track-ghost-info">
+                <span>Expected ghosts:</span>
+                <span class="track-ghost-value">Measuring…</span>
+              </div>
+            </div>
+
+            <div class="track-row" data-duration="150">
+              <div class="track-main">
+                <div class="track-label">
+                  <span class="track-label-main">150 ms</span>
+                  <span class="track-label-sub">Fast</span>
+                </div>
+                <div class="track-line">
+                  <div class="track-ball"></div>
+                </div>
+              </div>
+              <div class="track-ghost-info">
+                <span>Expected ghosts:</span>
+                <span class="track-ghost-value">Measuring…</span>
+              </div>
+            </div>
+
+            <div class="track-row" data-duration="500">
+              <div class="track-main">
+                <div class="track-label">
+                  <span class="track-label-main">500 ms</span>
+                  <span class="track-label-sub">Medium</span>
+                </div>
+                <div class="track-line">
+                  <div class="track-ball"></div>
+                </div>
+              </div>
+              <div class="track-ghost-info">
+                <span>Expected ghosts:</span>
+                <span class="track-ghost-value">Measuring…</span>
+              </div>
+            </div>
+
+            <div class="track-row" data-duration="1000">
+              <div class="track-main">
+                <div class="track-label">
+                  <span class="track-label-main">1000 ms</span>
+                  <span class="track-label-sub">Slow</span>
+                </div>
+                <div class="track-line">
+                  <div class="track-ball"></div>
+                </div>
+              </div>
+              <div class="track-ghost-info">
+                <span>Expected ghosts:</span>
+                <span class="track-ghost-value">Measuring…</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="motion-hint">
+            On each lane, the more distinct positions (“ghosts”) you can see at once, the higher your effective refresh rate and the better your motion handling.
+          </p>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-header">Live Metrics</div>
+        <div class="metrics-panel-content">
+          <div id="controls">
+            <label>
+              Background
+              <input type="color" id="background-color" value="#101018">
+            </label>
+            <label>
+              Decimals
+              <select id="decimal-places">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+              </select>
+            </label>
+            <label>
+              Interval
+              <select id="update-interval">
+                <option value="50">50 ms</option>
+                <option value="100" selected>100 ms</option>
+                <option value="250">250 ms</option>
+                <option value="500">500 ms</option>
+                <option value="1000">1000 ms</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="warning">⚠️ This browser window may not be on the primary monitor.</div>
+
+          <div class="metrics-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FPS (Frames per Second)</td>
+                  <td id="fps">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Frame Duration (ms)</td>
+                  <td id="frame-duration">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Refresh Rate (Hz)</td>
+                  <td id="refresh-rate">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Pixels per Frame</td>
+                  <td id="pixels-per-frame">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Pixels per Second</td>
+                  <td id="pixels-per-second">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Aspect Ratio</td>
+                  <td id="aspect-ratio">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Screen Resolution</td>
+                  <td id="resolution">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Scale (System)</td>
+                  <td id="scale">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Screen Orientation</td>
+                  <td id="orientation">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Bit Depth (per channel)</td>
+                  <td id="bit-depth">Calculating...</td>
+                </tr>
+                <tr>
+                  <td>Color Space</td>
+                  <td id="color-space">Calculating...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="fps-preview">
+            <div class="fps-preview-header">Frame rate preview</div>
+            <div class="fps-preview-list" id="fps-preview-list">
+              <div class="fps-preview-row" data-fps="30">
+                <div class="fps-preview-label">30 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="60">
+                <div class="fps-preview-label">60 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="120">
+                <div class="fps-preview-label">120 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="165">
+                <div class="fps-preview-label">165 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="240">
+                <div class="fps-preview-label">240 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="360">
+                <div class="fps-preview-label">360 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="480">
+                <div class="fps-preview-label">480 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="fps-preview-row" data-fps="610">
+                <div class="fps-preview-label">610 fps</div>
+                <div class="fps-preview-line">
+                  <div class="fps-preview-dot">
+                    <img src="ghost.svg" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="fps-preview-hint">
+              Preset tracks at or below your maximum measured refresh rate this session are shown. A custom line appears for your exact panel Hz when it falls between presets.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="app-footer" id="footer">
+      Refresh Rate - Monitor &amp; Optimize Display<br>
+      © 2025 Luiz Bizzio. All rights reserved. | ⭐
+      <a href="https://github.com/luizbizzio/refreshrate" target="_blank" rel="noopener noreferrer">
+        Star this repo
+      </a>
+    </footer>
   </div>
-
-  <div id="one-ms-container">
-    <div id="one-ms-ball"></div>
-  </div>
-
-  <p id="ghost-count">👻 Ghost Count: 0</p>
-
-  <p id="ball-info">
-    The more times you see this ball simultaneously on your screen, the smoother your monitor’s refresh rate is.
-  </p>
-  
-  <div id="controls">
-    <label>
-      Background Color:
-      <input type="color" id="background-color" value="#2d2d2d">
-    </label>
-    <label>
-      Decimals:
-      <select id="decimal-places">
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-      </select>
-    </label>
-    <label>
-      Update Interval:
-      <select id="update-interval">
-        <option value="50">50 ms</option>
-        <option value="100" selected>100 ms</option>
-        <option value="250">250 ms</option>
-        <option value="500">500 ms</option>
-        <option value="1000">1000 ms</option>
-      </select>
-    </label>
-  </div>
-
-  <div id="warning">⚠️ This browser window is not on the primary monitor!</div>
-
-  <table>
-    <tr>
-      <th>Parameter</th>
-      <th>Value</th>
-    </tr>
-    <tr>
-      <td>FPS (Frames per Second)</td>
-      <td id="fps">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Frame Duration (ms)</td>
-      <td id="frame-duration">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Refresh Rate (Hz)</td>
-      <td id="refresh-rate">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Pixels per Frame</td>
-      <td id="pixels-per-frame">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Pixels per Second</td>
-      <td id="pixels-per-second">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Aspect Ratio</td>
-      <td id="aspect-ratio">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Screen Resolution</td>
-      <td id="resolution">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Scale (System)</td>
-      <td id="scale">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Screen Orientation</td>
-      <td id="orientation">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Bit Depth (bpc)</td>
-      <td id="bit-depth">Calculating...</td>
-    </tr>
-    <tr>
-      <td>Color Space</td>
-      <td id="color-space">Calculating...</td>
-    </tr>
-  </table>
-
- <div id="footer">
-   Refresh Rate - Monitor &amp; Optimize Display<br>
-   © 2025 Luiz Bizzio. All rights reserved. | ⭐
-   <a href="https://github.com/luizbizzio/refreshrate" target="_blank" rel="noopener noreferrer">
-    Star this repo
-   </a>
- </div>
 
 <script>
-  (function screenAndSystemDetails() {
-    const fpsElement             = document.getElementById('fps');
-    const frameDurationElement   = document.getElementById('frame-duration');
-    const refreshRateElement     = document.getElementById('refresh-rate');
-    const pixelsPerFrameElement  = document.getElementById('pixels-per-frame');
-    const pixelsPerSecondElement = document.getElementById('pixels-per-second');
-    const aspectRatioElement     = document.getElementById('aspect-ratio');
-    const resolutionElement      = document.getElementById('resolution');
-    const scaleElement           = document.getElementById('scale');
-    const orientationElement     = document.getElementById('orientation');
-    const warningElement         = document.getElementById('warning');
-    const fullscreenButton       = document.getElementById('fullscreen-button');
-    const backgroundColorPicker  = document.getElementById('background-color');
-    const decimalPlacesSelector  = document.getElementById('decimal-places');
-    const updateIntervalSelector = document.getElementById('update-interval');
+(function () {
+  const fpsElement             = document.getElementById('fps');
+  const frameDurationElement   = document.getElementById('frame-duration');
+  const refreshRateElement     = document.getElementById('refresh-rate');
+  const pixelsPerFrameElement  = document.getElementById('pixels-per-frame');
+  const pixelsPerSecondElement = document.getElementById('pixels-per-second');
+  const aspectRatioElement     = document.getElementById('aspect-ratio');
+  const resolutionElement      = document.getElementById('resolution');
+  const scaleElement           = document.getElementById('scale');
+  const orientationElement     = document.getElementById('orientation');
+  const bitDepthElement        = document.getElementById('bit-depth');
+  const colorSpaceElement      = document.getElementById('color-space');
 
-    const bitDepthElement = document.getElementById('bit-depth');
-    const colorSpaceElement = document.getElementById('color-space');
+  const warningElement         = document.getElementById('warning');
+  const fullscreenButton       = document.getElementById('fullscreen-button');
+  const backgroundColorPicker  = document.getElementById('background-color');
+  const decimalPlacesSelector  = document.getElementById('decimal-places');
+  const updateIntervalSelector = document.getElementById('update-interval');
 
-    const animationSquare   = document.getElementById('animation-square');
-    const animationTriangle = document.getElementById('animation-triangle');
-    const animationRect     = document.getElementById('animation-rectangle');
-    const animationPulse    = document.getElementById('animation-pulse');
-    const animationColor    = document.getElementById('animation-color');
+  const trackRows = document.querySelectorAll('.track-row');
 
-    const oneMsContainer = document.getElementById('one-ms-container');
-    const oneMsBall = document.getElementById('one-ms-ball');
-    const ghostCountElem = document.getElementById('ghost-count');
+  const tracks = Array.from(trackRows).map(function (row) {
+    const duration = parseInt(row.getAttribute('data-duration'), 10);
+    const line = row.querySelector('.track-line');
+    const ball = row.querySelector('.track-ball');
+    const ghostValue = row.querySelector('.track-ghost-value');
+    return {
+      duration: duration,
+      line: line,
+      ball: ball,
+      ghostValue: ghostValue,
+      distance: 0
+    };
+  });
 
+  const fpsPreviewList = document.getElementById('fps-preview-list');
+  const presetRows = fpsPreviewList.querySelectorAll('.fps-preview-row');
 
-    let ghostLifetime = parseInt(updateIntervalSelector.value, 10);
-    let duration = parseInt(updateIntervalSelector.value, 10);
-    let ghostCount = -1; 
+  const staticPreviews = Array.from(presetRows).map(function (row) {
+    const fps = parseInt(row.getAttribute('data-fps'), 10);
+    const line = row.querySelector('.fps-preview-line');
+    const dot = row.querySelector('.fps-preview-dot');
+    return {
+      fps: fps,
+      frameInterval: 1000 / fps,
+      lastUpdate: 0,
+      currentX: 0,
+      row: row,
+      line: line,
+      dot: dot,
+      distance: 0,
+      visible: false
+    };
+  });
 
-    let startTime = null;
+  const presetFpsValues = staticPreviews.map(function (p) { return p.fps; });
 
-    let distance = oneMsContainer.clientWidth - oneMsBall.clientWidth - 5;
+  let customPreview = null;
+  let maxDetectedRefreshRate = 0;
 
-    function animateBall(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-
-      let progress = elapsed / duration;
-      if (progress > 1) progress = 1;
-
-      const currentX = progress * distance;
-      oneMsBall.style.transform = `translateX(${currentX}px)`;
-
-      createGhostBall(currentX);
-
-      if (progress < 1) {
-        window.requestAnimationFrame(animateBall);
-      } else {
-        startTime = null;
-        window.requestAnimationFrame(animateBall);
-      }
-    }
-
-  function createGhostBall(xPos) {
-    const ghost = document.createElement('div');
-    ghost.className = 'ghost-ball';
-    ghost.style.top = oneMsBall.style.top || '2.5px';
-    ghost.style.left = `${xPos}px`;
-    oneMsContainer.appendChild(ghost);
-    ghostCount++;
-    updateGhostCount();
-  
-    requestAnimationFrame(() => {
-      ghost.style.opacity = '0';
+  function recalcTrackDistances() {
+    tracks.forEach(function (track) {
+      if (!track.line || !track.ball) return;
+      const lineWidth = track.line.clientWidth;
+      const ballWidth = track.ball.offsetWidth;
+      track.distance = Math.max(lineWidth - ballWidth, 0);
     });
-  
-    setTimeout(() => {
-      ghost.remove();
-      ghostCount--;
-      updateGhostCount();
-    }, ghostLifetime);
   }
 
-    function updateGhostCount() {
-      ghostCountElem.textContent = `👻 Ghost Count: ${ghostCount}`;
+  function recalcAllDistances() {
+    recalcTrackDistances();
+    staticPreviews.forEach(function (p) {
+      if (!p.line || !p.dot) return;
+      const lineWidth = p.line.clientWidth;
+      const dotWidth = p.dot.offsetWidth;
+      p.distance = Math.max(lineWidth - dotWidth, 0);
+    });
+    if (customPreview && customPreview.line && customPreview.dot) {
+      const lineWidth = customPreview.line.clientWidth;
+      const dotWidth = customPreview.dot.offsetWidth;
+      customPreview.distance = Math.max(lineWidth - dotWidth, 0);
     }
+  }
 
-    const aspectRatios = {
-      "4:3"   : 4 / 3,
-      "16:10" : 16 / 10,
-      "16:9"  : 16 / 9,
-      "21:9"  : 21 / 9,
-      "32:9"  : 32 / 9,
-      "5:4"   : 5 / 4,
-      "3:2"   : 3 / 2,
-      "2:1"   : 2 / 1,
-    
-      "19.5:9" : 19.5 / 9,
-      "20:9"   : 20 / 9,
-      "18:9"   : 18 / 9,
-      "18.5:9" : 18.5 / 9,
-      "19:9"   : 19 / 9,
-      "21:10"  : 21 / 10,
-    
-      "4:3"    : 4 / 3,
-      "3:4"    : 3 / 4,
-      "5:3"    : 5 / 3,
-      "8:5"    : 8 / 5,
-      "10:3"   : 10 / 3,
-    
-      "1:1"    : 1 / 1,
-      "9:16"   : 9 / 16,
-      "11:9"   : 11 / 9,
-      "1.91:1" : 1.91 / 1,
-    };
-    
-        let updateInterval = parseInt(updateIntervalSelector.value, 10);
-    
-         updateIntervalSelector.addEventListener('change', (event) => {
-         updateInterval = parseInt(event.target.value, 10);
-         ghostLifetime = updateInterval;
-         duration = updateInterval;
-         startTime = null;
-        });
+  window.addEventListener('resize', recalcAllDistances);
+  window.addEventListener('orientationchange', recalcAllDistances);
+  window.addEventListener('load', recalcAllDistances);
+  recalcAllDistances();
 
-      function findClosestAspectRatio(ratio, width, height) {
-      let closestRatio = null;
-      let smallestDiff = Infinity;
+  let updateInterval = parseInt(updateIntervalSelector.value, 10) || 100;
 
-      for (const [key, value] of Object.entries(aspectRatios)) {
-        const diff = Math.abs(value - ratio);
-        if (diff < smallestDiff) {
-          closestRatio = key;
-          smallestDiff = diff;
-        }
+  updateIntervalSelector.addEventListener('change', function (event) {
+    const value = parseInt(event.target.value, 10);
+    updateInterval = isNaN(value) ? 100 : value;
+  });
+
+  backgroundColorPicker.addEventListener('input', function (event) {
+    document.documentElement.style.setProperty('--surface-alt', event.target.value);
+  });
+
+  fullscreenButton.addEventListener('click', function () {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(function () {});
+      fullscreenButton.textContent = 'Exit Fullscreen';
+    } else {
+      document.exitFullscreen().catch(function () {});
+      fullscreenButton.textContent = 'Fullscreen';
+    }
+  });
+
+  const aspectRatios = {
+    "4:3"   : 4 / 3,
+    "16:10" : 16 / 10,
+    "16:9"  : 16 / 9,
+    "21:9"  : 21 / 9,
+    "32:9"  : 32 / 9,
+    "5:4"   : 5 / 4,
+    "3:2"   : 3 / 2,
+    "2:1"   : 2 / 1,
+    "19.5:9": 19.5 / 9,
+    "20:9"  : 20 / 9,
+    "18:9"  : 18 / 9,
+    "18.5:9": 18.5 / 9,
+    "19:9"  : 19 / 9,
+    "21:10" : 21 / 10,
+    "3:4"   : 3 / 4,
+    "5:3"   : 5 / 3,
+    "8:5"   : 8 / 5,
+    "10:3"  : 10 / 3,
+    "1:1"   : 1 / 1,
+    "9:16"  : 9 / 16,
+    "11:9"  : 11 / 9,
+    "1.91:1": 1.91 / 1
+  };
+
+  function findClosestAspectRatio(ratio, width, height) {
+    let closestRatio = null;
+    let smallestDiff = Infinity;
+
+    for (const key in aspectRatios) {
+      const value = aspectRatios[key];
+      const diff = Math.abs(value - ratio);
+      if (diff < smallestDiff) {
+        closestRatio = key;
+        smallestDiff = diff;
       }
-
-      return smallestDiff < 0.01 ? closestRatio : `${width}:${height}`;
     }
 
-    function updateScreenDetails() {
+    if (smallestDiff < 0.01) return closestRatio;
+    return width.toFixed(0) + ":" + height.toFixed(0);
+  }
+
+  function updateScreenDetails() {
     let width = screen.width * window.devicePixelRatio;
     let height = screen.height * window.devicePixelRatio;
 
     let currentOrientation = "Unknown";
     if (screen.orientation && screen.orientation.type) {
-      currentOrientation = screen.orientation.type.includes("landscape")
+      currentOrientation = screen.orientation.type.indexOf("landscape") !== -1
         ? "Landscape"
         : "Portrait";
     } else {
@@ -607,14 +994,16 @@ th {
     }
 
     if (currentOrientation === "Portrait") {
-      [width, height] = [height, width];
+      const tmp = width;
+      width = height;
+      height = tmp;
     }
 
     const ratio = width / height;
     const aspectRatio = findClosestAspectRatio(ratio, width, height);
 
-    resolutionElement.textContent = `${width.toFixed(0)} x ${height.toFixed(0)} px`;
-    scaleElement.textContent = `${(window.devicePixelRatio * 100).toFixed(0)}%`;
+    resolutionElement.textContent = width.toFixed(0) + " x " + height.toFixed(0) + " px";
+    scaleElement.textContent = (window.devicePixelRatio * 100).toFixed(0) + "%";
     orientationElement.textContent = currentOrientation;
     aspectRatioElement.textContent = aspectRatio;
 
@@ -622,12 +1011,15 @@ th {
       window.screenX >= 0 &&
       window.screenY >= 0 &&
       screen.availWidth === screen.width;
-    warningElement.style.display = isPrimaryMonitor ? "none" : "block";
+
+    if (warningElement) {
+      warningElement.style.display = isPrimaryMonitor ? "none" : "block";
+    }
 
     const cDepthTotal = screen.colorDepth;
     let bitsPerChannel = cDepthTotal / 3;
     bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
-    bitDepthElement.textContent = bitsPerChannel + "-bit";
+    bitDepthElement.textContent = bitsPerChannel + "-bit (from " + cDepthTotal + " bpp)";
 
     let colorSpaceDetected = "Unknown";
     if (window.matchMedia) {
@@ -642,120 +1034,268 @@ th {
     return isPrimaryMonitor;
   }
 
-    let frameTimes = [];
-    let fpsFrameCount = 0;
-    let fpsStartTime = performance.now();
-    let lastUpdate = 0;
+  function updateGhostExpectations(refreshRate) {
+    if (!refreshRate || !isFinite(refreshRate) || refreshRate <= 0) return;
+    tracks.forEach(function (track) {
+      if (!track.ghostValue) return;
+      const ghosts = refreshRate * (track.duration / 1000);
+      const rounded = Math.round(ghosts);
+      track.ghostValue.textContent = String(rounded);
+    });
+  }
 
-    function calculatePerformanceMetrics(timestamp) {
-      const isPrimaryMonitor = updateScreenDetails();
+  function ensureCustomPreview(customFps) {
+    if (customFps <= 0 || !isFinite(customFps)) return;
 
-      if (!isPrimaryMonitor) {
-        fpsElement.textContent             = 'Canceled';
-        frameDurationElement.textContent   = 'Canceled';
-        refreshRateElement.textContent     = 'Canceled';
-        pixelsPerFrameElement.textContent  = 'Canceled';
-        pixelsPerSecondElement.textContent = 'Canceled';
-      } else {
-        fpsFrameCount++;
-        const elapsedTime = timestamp - fpsStartTime;
-        if (elapsedTime >= updateInterval) {
-          const fps = fpsFrameCount / (elapsedTime / 1000);
-          fpsFrameCount = 0;
-          fpsStartTime = timestamp;
+    const rounded = Math.round(customFps);
+    const isCloseToPreset = presetFpsValues.some(function (v) {
+      return Math.abs(v - rounded) <= 1;
+    });
 
-          fpsElement.textContent =
-            `${fps.toFixed(parseInt(decimalPlacesSelector.value, 10))} fps`;
-
-          if (fps > 0) {
-            const frameDurationMs = 1000 / fps;
-            frameDurationElement.textContent =
-              `${frameDurationMs.toFixed(parseInt(decimalPlacesSelector.value, 10))} ms`;
-          } else {
-            frameDurationElement.textContent = '∞';
-          }
+    if (isCloseToPreset) {
+      if (customPreview) {
+        if (customPreview.row && customPreview.row.parentNode) {
+          customPreview.row.parentNode.removeChild(customPreview.row);
         }
+        customPreview = null;
+      }
+      return;
+    }
 
-        frameTimes.push(timestamp);
-        if (frameTimes.length > 100) frameTimes.shift();
-        const intervals = frameTimes.slice(1).map((t, i) => t - frameTimes[i]);
-        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    if (!customPreview) {
+      const row = document.createElement('div');
+      row.className = 'fps-preview-row fps-preview-row-custom';
+      row.setAttribute('data-fps', String(rounded));
+
+      const label = document.createElement('div');
+      label.className = 'fps-preview-label';
+      label.textContent = rounded + ' fps (your panel)';
+
+      const line = document.createElement('div');
+      line.className = 'fps-preview-line';
+
+      const dot = document.createElement('div');
+      dot.className = 'fps-preview-dot';
+
+      const img = document.createElement('img');
+      img.src = 'ghost.svg';
+      img.alt = '';
+
+      dot.appendChild(img);
+      line.appendChild(dot);
+      row.appendChild(label);
+      row.appendChild(line);
+
+      let inserted = false;
+      const children = Array.from(fpsPreviewList.children);
+      for (let i = 0; i < children.length; i++) {
+        const childFpsAttr = children[i].getAttribute('data-fps');
+        if (!childFpsAttr) continue;
+        const childFps = parseInt(childFpsAttr, 10);
+        if (childFps > rounded) {
+          fpsPreviewList.insertBefore(row, children[i]);
+          inserted = true;
+          break;
+        }
+      }
+      if (!inserted) {
+        fpsPreviewList.appendChild(row);
+      }
+
+      customPreview = {
+        fps: rounded,
+        frameInterval: 1000 / rounded,
+        lastUpdate: 0,
+        currentX: 0,
+        row: row,
+        line: line,
+        dot: dot,
+        distance: 0,
+        visible: false
+      };
+      recalcAllDistances();
+    } else {
+      customPreview.fps = rounded;
+      customPreview.frameInterval = 1000 / rounded;
+      customPreview.row.setAttribute('data-fps', String(rounded));
+      const label = customPreview.row.querySelector('.fps-preview-label');
+      if (label) {
+        label.textContent = rounded + ' fps (your panel)';
+      }
+      let inserted = false;
+      const children = Array.from(fpsPreviewList.children).filter(function (c) {
+        return c !== customPreview.row;
+      });
+      for (let i = 0; i < children.length; i++) {
+        const childFpsAttr = children[i].getAttribute('data-fps');
+        if (!childFpsAttr) continue;
+        const childFps = parseInt(childFpsAttr, 10);
+        if (childFps > rounded) {
+          fpsPreviewList.insertBefore(customPreview.row, children[i]);
+          inserted = true;
+          break;
+        }
+      }
+      if (!inserted) {
+        fpsPreviewList.appendChild(customPreview.row);
+      }
+      recalcAllDistances();
+    }
+  }
+
+  function updateFpsPreviewVisibility(refreshRate) {
+    if (!refreshRate || !isFinite(refreshRate) || refreshRate <= 0) return;
+
+    if (refreshRate > maxDetectedRefreshRate) {
+      maxDetectedRefreshRate = refreshRate;
+    }
+
+    const now = performance.now();
+    const threshold = maxDetectedRefreshRate;
+
+    staticPreviews.forEach(function (p) {
+      const visible = p.fps <= threshold + 0.5;
+      p.visible = visible;
+      p.row.style.display = visible ? 'flex' : 'none';
+
+      if (visible) {
+        if (!p.line || !p.dot) return;
+        const lineWidth = p.line.clientWidth;
+        const dotWidth = p.dot.offsetWidth;
+        p.distance = Math.max(lineWidth - dotWidth, 0);
+        p.lastUpdate = now - p.frameInterval;
+        p.currentX = 0;
+      }
+    });
+
+    ensureCustomPreview(threshold);
+
+    if (customPreview) {
+      customPreview.visible = true;
+      customPreview.row.style.display = 'flex';
+      if (customPreview.line && customPreview.dot) {
+        const lineWidth = customPreview.line.clientWidth;
+        const dotWidth = customPreview.dot.offsetWidth;
+        customPreview.distance = Math.max(lineWidth - dotWidth, 0);
+        customPreview.lastUpdate = now - customPreview.frameInterval;
+        customPreview.currentX = 0;
+      }
+    }
+  }
+
+  function animateTracks(timestamp) {
+    tracks.forEach(function (track) {
+      if (!track.line || !track.ball) return;
+      if (!track.distance || track.distance <= 0) return;
+
+      const progress = (timestamp % track.duration) / track.duration;
+      const x = progress * track.distance;
+      track.ball.style.transform = 'translateX(' + x + 'px)';
+    });
+
+    window.requestAnimationFrame(animateTracks);
+  }
+
+  const loopDuration = 1000;
+
+  function animateFpsPreviews(timestamp) {
+    const phase = (timestamp % loopDuration) / loopDuration;
+
+    const previews = customPreview
+      ? staticPreviews.concat([customPreview])
+      : staticPreviews;
+
+    previews.forEach(function (p) {
+      if (!p.visible) return;
+      if (!p.line || !p.dot) return;
+      if (!p.distance || p.distance <= 0) return;
+
+      if (p.lastUpdate === 0) {
+        p.lastUpdate = timestamp;
+        p.currentX = phase * p.distance;
+      } else if (timestamp - p.lastUpdate >= p.frameInterval) {
+        p.lastUpdate = timestamp;
+        p.currentX = phase * p.distance;
+      }
+
+      p.dot.style.transform = 'translateX(' + p.currentX + 'px)';
+    });
+
+    window.requestAnimationFrame(animateFpsPreviews);
+  }
+
+  let frameTimes = [];
+  let fpsFrameCount = 0;
+  let fpsStartTime = performance.now();
+  let lastUpdate = 0;
+
+  function calculatePerformanceMetrics(timestamp) {
+    const isPrimaryMonitor = updateScreenDetails();
+
+    if (!isPrimaryMonitor) {
+      fpsElement.textContent             = 'Canceled';
+      frameDurationElement.textContent   = 'Canceled';
+      refreshRateElement.textContent     = 'Canceled';
+      pixelsPerFrameElement.textContent  = 'Canceled';
+      pixelsPerSecondElement.textContent = 'Canceled';
+    } else {
+      fpsFrameCount++;
+      const elapsedTime = timestamp - fpsStartTime;
+      const decimals = parseInt(decimalPlacesSelector.value, 10) || 2;
+
+      if (elapsedTime >= updateInterval) {
+        const fps = fpsFrameCount / (elapsedTime / 1000);
+        fpsFrameCount = 0;
+        fpsStartTime = timestamp;
+
+        fpsElement.textContent = fps.toFixed(decimals) + ' fps';
+
+        if (fps > 0) {
+          const frameDurationMs = 1000 / fps;
+          frameDurationElement.textContent = frameDurationMs.toFixed(decimals) + ' ms';
+        } else {
+          frameDurationElement.textContent = '∞';
+        }
+      }
+
+      frameTimes.push(timestamp);
+      if (frameTimes.length > 100) frameTimes.shift();
+
+      if (frameTimes.length > 1) {
+        const intervals = [];
+        for (let i = 1; i < frameTimes.length; i++) {
+          intervals.push(frameTimes[i] - frameTimes[i - 1]);
+        }
+        const sum = intervals.reduce(function (a, b) { return a + b; }, 0);
+        const avgInterval = sum / intervals.length;
         const refreshRate = 1000 / avgInterval;
 
         if (timestamp - lastUpdate >= updateInterval) {
-          refreshRateElement.textContent =
-            `${refreshRate.toFixed(parseInt(decimalPlacesSelector.value, 10))} Hz`;
+          refreshRateElement.textContent = refreshRate.toFixed(decimals) + ' Hz';
 
           const width = screen.width * window.devicePixelRatio;
           const height = screen.height * window.devicePixelRatio;
           const pixelsPerFrame = width * height;
           const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
-          pixelsPerFrameElement.textContent  = `${pixelsPerFrame.toLocaleString()} px`;
-          pixelsPerSecondElement.textContent = `${Math.round(pixelsPerSecond).toLocaleString()} px/s`;
+          pixelsPerFrameElement.textContent = pixelsPerFrame.toLocaleString() + ' px';
+          pixelsPerSecondElement.textContent = Math.round(pixelsPerSecond).toLocaleString() + ' px/s';
 
-          const newDuration = (60 / refreshRate).toFixed(2);
-          if (newDuration > 0.1 && newDuration < 10 && !isNaN(newDuration)) {
-            animationSquare.style.animationDuration   = newDuration + 's';
-            animationTriangle.style.animationDuration = newDuration + 's';
-            animationRect.style.animationDuration     = newDuration + 's';
-            animationPulse.style.animationDuration    = newDuration + 's';
-            animationColor.style.animationDuration    = newDuration + 's';
-          }
+          updateGhostExpectations(refreshRate);
+          updateFpsPreviewVisibility(refreshRate);
+
           lastUpdate = timestamp;
         }
       }
-      window.requestAnimationFrame(calculatePerformanceMetrics);
     }
 
-  fullscreenButton.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => console.error(err));
-      fullscreenButton.textContent = 'Exit Fullscreen';
-    } else {
-      document.exitFullscreen().catch(err => console.error(err));
-      fullscreenButton.textContent = 'Enter Fullscreen';
-    }
-  });
-
-
-  backgroundColorPicker.addEventListener('input', (event) => {
-      document.getElementById('animation-color').style.backgroundColor = event.target.value;
-  });
-      
-  function restartAnimations() {
-    const newDistance = oneMsContainer.clientWidth - oneMsBall.clientWidth;
-    if (newDistance !== distance) {
-      distance = newDistance;
-    }
-  
-    const animatedElements = [
-      animationSquare,
-      animationTriangle,
-      animationRect,
-      animationPulse,
-      animationColor,
-    ];
-  
-    animatedElements.forEach((element) => {
-      if (element) {
-        element.style.animation = 'none';
-        element.offsetHeight;
-        element.style.animation = '';
-      }
-    });
-  
-    startTime = null;
+    window.requestAnimationFrame(calculatePerformanceMetrics);
   }
-  
-  window.addEventListener('orientationchange', restartAnimations);
-  window.addEventListener('resize', restartAnimations);
-    
-  window.requestAnimationFrame(animateBall);
+
+  window.requestAnimationFrame(animateTracks);
+  window.requestAnimationFrame(animateFpsPreviews);
   window.requestAnimationFrame(calculatePerformanceMetrics);
 })();
 </script>
-
-<script>"serviceWorker"in navigator&&navigator.serviceWorker.register("sw.js");</script>
 </body>
 </html>
