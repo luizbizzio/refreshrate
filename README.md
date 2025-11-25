@@ -10,7 +10,7 @@ It focuses on three things:
 
 <br>
 <div align="center">
-  <img src="/screenshots/desktop-screenshot.jpg" alt="Desktop Screenshot" style="width: 630px;"> &nbsp;
+  <img src="/screenshot.jpg" alt="Desktop Screenshot"> &nbsp;
 </div>
 <br>
 
