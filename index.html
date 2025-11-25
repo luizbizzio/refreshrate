@@ -887,6 +887,7 @@ td:nth-child(2) {
 
   let customPreview = null;
   let maxDetectedRefreshRate = 0;
+  const dpr = window.devicePixelRatio || 1;
 
   function recalcTrackDistances() {
     tracks.forEach(function (track) {
@@ -981,8 +982,8 @@ td:nth-child(2) {
   }
 
   function updateScreenDetails() {
-    let width  = screen.width;
-    let height = screen.height;
+    const cssWidth  = screen.width;
+    const cssHeight = screen.height;
 
     let currentOrientation = "Unknown";
     if (screen.orientation && screen.orientation.type) {
@@ -990,13 +991,23 @@ td:nth-child(2) {
         ? "Landscape"
         : "Portrait";
     } else {
-      currentOrientation = width > height ? "Landscape" : "Portrait";
+      currentOrientation = cssWidth >= cssHeight ? "Landscape" : "Portrait";
     }
+
+    let width  = Math.round(cssWidth * dpr);
+    let height = Math.round(cssHeight * dpr);
+
+    if (currentOrientation === "Portrait" && width > height) {
+      const tmp = width;
+      width = height;
+      height = tmp;
+    }
+
     const ratio = width / height;
     const aspectRatio = findClosestAspectRatio(ratio, width, height);
 
     resolutionElement.textContent = width + " x " + height + " px";
-    scaleElement.textContent = (window.devicePixelRatio * 100).toFixed(0) + "%";
+    scaleElement.textContent = (dpr * 100).toFixed(0) + "%";
     orientationElement.textContent = currentOrientation;
     aspectRatioElement.textContent = aspectRatio;
 
@@ -1266,10 +1277,12 @@ td:nth-child(2) {
         if (timestamp - lastUpdate >= updateInterval) {
           refreshRateElement.textContent = refreshRate.toFixed(decimals) + ' Hz';
 
-			const width = screen.width;
-			const height = screen.height;
-			const pixelsPerFrame = width * height;
-			const pixelsPerSecond = pixelsPerFrame * refreshRate;
+          const cssWidth = screen.width;
+          const cssHeight = screen.height;
+          const width = Math.round(cssWidth * dpr);
+          const height = Math.round(cssHeight * dpr);
+          const pixelsPerFrame = width * height;
+          const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
           pixelsPerFrameElement.textContent = pixelsPerFrame.toLocaleString() + ' px';
           pixelsPerSecondElement.textContent = Math.round(pixelsPerSecond).toLocaleString() + ' px/s';
