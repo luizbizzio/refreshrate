@@ -36,7 +36,7 @@ It focuses on three things:
 
 - 🧪 **Frame Rate Preview (canonical FPS lines)**  
   Animated rows for common FPS targets:
-  `30, 60, 120, 165, 240, 360, 480, 610`.  
+  `30, 60, 120, 165, 240, 360, 480, 600`.  
   Only FPS values **at or below your maximum measured refresh rate** this session are shown, plus a **custom line** for your exact panel Hz when it sits between presets.
 
 - 📱 **Responsive and PWA-ready**  
