@@ -1,4 +1,4 @@
-<h1 align="center">Refresh Rate Test</h1>
+<h1 align="center">Refresh Rate Test 🖥️</h1>
 
 [RefreshRate.app](https://refreshrate.app) is a browser-based tool to **measure how your display actually behaves in motion**, not just what the Windows panel says.
 
