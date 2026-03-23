@@ -717,10 +717,14 @@ td:nth-child(2) {
                   <td>Aspect Ratio</td>
                   <td id="aspect-ratio">Calculating...</td>
                 </tr>
-                <tr>
-                  <td>Screen Resolution</td>
-                  <td id="resolution">Calculating...</td>
-                </tr>
+				<tr>
+				  <td>Reported Screen Size</td>
+				  <td id="resolution">Calculating...</td>
+				</tr>
+				<tr>
+				  <td>Viewport Size</td>
+				  <td id="viewport">Calculating...</td>
+				</tr>
                 <tr>
                   <td>Scale (System)</td>
                   <td id="scale">Calculating...</td>
@@ -873,6 +877,11 @@ td:nth-child(2) {
   const fpsPreviewList = document.getElementById('fps-preview-list');
   const presetRows = fpsPreviewList.querySelectorAll('.fps-preview-row');
 
+  const viewportElement        = document.getElementById('viewport');
+
+  let renderWidth = 0;
+  let renderHeight = 0;
+
   const staticPreviews = Array.from(presetRows).map(function (row) {
     const fps = parseInt(row.getAttribute('data-fps'), 10);
     const line = row.querySelector('.fps-preview-line');
@@ -991,67 +1000,72 @@ td:nth-child(2) {
     return width.toFixed(0) + ":" + height.toFixed(0);
   }
 
-  function updateScreenDetails() {
-    panelDpr = window.devicePixelRatio || 1;
+function updateScreenDetails() {
+  panelDpr = window.devicePixelRatio || 1;
 
-    const logicalWidth  = window.screen.width;
-    const logicalHeight = window.screen.height;
+  const logicalWidth = Number(window.screen.width) || 0;
+  const logicalHeight = Number(window.screen.height) || 0;
 
-    let width = logicalWidth * panelDpr;
-    let height = logicalHeight * panelDpr;
+  let reportedWidth = Math.round(logicalWidth * panelDpr);
+  let reportedHeight = Math.round(logicalHeight * panelDpr);
 
-    let currentOrientation = "Unknown";
-    if (screen.orientation && screen.orientation.type) {
-      currentOrientation = screen.orientation.type.indexOf("landscape") !== -1
-        ? "Landscape"
-        : "Portrait";
-    } else {
-      currentOrientation = logicalWidth >= logicalHeight ? "Landscape" : "Portrait";
-    }
-
-    if (currentOrientation === "Portrait") {
-      const tmp = width;
-      width = height;
-      height = tmp;
-    }
-
-    panelWidth = width;
-    panelHeight = height;
-
-    const ratio = width / height;
-    const aspectRatio = findClosestAspectRatio(ratio, width, height);
-
-    resolutionElement.textContent = width.toFixed(0) + " x " + height.toFixed(0) + " px";
-    scaleElement.textContent = (panelDpr * 100).toFixed(0) + "%";
-    aspectRatioElement.textContent = aspectRatio;
-    orientationElement.textContent = currentOrientation;
-
-    const isPrimaryMonitor =
-      window.screenX >= 0 &&
-      window.screenY >= 0 &&
-      screen.availWidth === screen.width;
-
-    if (warningElement) {
-      warningElement.style.display = isPrimaryMonitor ? "none" : "block";
-    }
-
-    const cDepthTotal = screen.colorDepth;
-    let bitsPerChannel = cDepthTotal / 3;
-    bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
-    bitDepthElement.textContent = bitsPerChannel + "-bit (from " + cDepthTotal + " bpp)";
-
-    let colorSpaceDetected = "Unknown";
-    if (window.matchMedia) {
-      if (window.matchMedia("(dynamic-range: high)").matches) {
-        colorSpaceDetected = "HDR";
-      } else if (window.matchMedia("(dynamic-range: standard)").matches) {
-        colorSpaceDetected = "SDR";
-      }
-    }
-    colorSpaceElement.textContent = colorSpaceDetected;
-
-    return isPrimaryMonitor;
+  let currentOrientation = "Unknown";
+  if (screen.orientation && screen.orientation.type) {
+    currentOrientation = screen.orientation.type.indexOf("landscape") !== -1
+      ? "Landscape"
+      : "Portrait";
+  } else {
+    currentOrientation = logicalWidth >= logicalHeight ? "Landscape" : "Portrait";
   }
+
+  if (currentOrientation === "Portrait") {
+    const tmp = reportedWidth;
+    reportedWidth = reportedHeight;
+    reportedHeight = tmp;
+  }
+
+  const viewportCssWidth = Math.round(window.visualViewport ? window.visualViewport.width : window.innerWidth);
+  const viewportCssHeight = Math.round(window.visualViewport ? window.visualViewport.height : window.innerHeight);
+
+  renderWidth = Math.round(viewportCssWidth * panelDpr);
+  renderHeight = Math.round(viewportCssHeight * panelDpr);
+
+  panelWidth = reportedWidth;
+  panelHeight = reportedHeight;
+
+  const ratioBaseWidth = reportedWidth || renderWidth || 1;
+  const ratioBaseHeight = reportedHeight || renderHeight || 1;
+  const ratio = ratioBaseWidth / ratioBaseHeight;
+  const aspectRatio = findClosestAspectRatio(ratio, ratioBaseWidth, ratioBaseHeight);
+
+  resolutionElement.textContent = reportedWidth + " x " + reportedHeight + " px";
+  viewportElement.textContent = renderWidth + " x " + renderHeight + " px";
+  scaleElement.textContent = (panelDpr * 100).toFixed(0) + "%";
+  aspectRatioElement.textContent = aspectRatio;
+  orientationElement.textContent = currentOrientation;
+
+  const isPrimaryMonitor =
+    window.screenX >= 0 &&
+    window.screenY >= 0 &&
+    screen.availWidth === screen.width;
+
+  const cDepthTotal = screen.colorDepth;
+  let bitsPerChannel = cDepthTotal / 3;
+  bitsPerChannel = Math.round(bitsPerChannel * 100) / 100;
+  bitDepthElement.textContent = bitsPerChannel + "-bit (from " + cDepthTotal + " bpp)";
+
+  let colorSpaceDetected = "Unknown";
+  if (window.matchMedia) {
+    if (window.matchMedia("(dynamic-range: high)").matches) {
+      colorSpaceDetected = "HDR";
+    } else if (window.matchMedia("(dynamic-range: standard)").matches) {
+      colorSpaceDetected = "SDR";
+    }
+  }
+  colorSpaceElement.textContent = colorSpaceDetected;
+
+  return isPrimaryMonitor;
+}
 
   function updateGhostExpectations(refreshRate) {
     if (!refreshRate || !isFinite(refreshRate) || refreshRate <= 0) return;
@@ -1292,16 +1306,19 @@ td:nth-child(2) {
         if (timestamp - lastUpdate >= updateInterval) {
           refreshRateElement.textContent = refreshRate.toFixed(decimals) + ' Hz';
 
-          const dpr = panelDpr || window.devicePixelRatio || 1;
-          let width = panelWidth;
-          let height = panelHeight;
-          if (!width || !height) {
-            width = screen.width * dpr;
-            height = screen.height * dpr;
-          }
-
-          const pixelsPerFrame = width * height;
-          const pixelsPerSecond = pixelsPerFrame * refreshRate;
+		 const dpr = panelDpr || window.devicePixelRatio || 1;
+		 let width = renderWidth;
+		 let height = renderHeight;
+		
+		 if (!width || !height) {
+		   const fallbackViewportWidth = Math.round((window.visualViewport ? window.visualViewport.width : window.innerWidth) * dpr);
+		   const fallbackViewportHeight = Math.round((window.visualViewport ? window.visualViewport.height : window.innerHeight) * dpr);
+		   width = fallbackViewportWidth;
+		   height = fallbackViewportHeight;
+		 }
+		
+		 const pixelsPerFrame = width * height;
+  		 const pixelsPerSecond = pixelsPerFrame * refreshRate;
 
           pixelsPerFrameElement.textContent = pixelsPerFrame.toLocaleString() + ' px';
           pixelsPerSecondElement.textContent = Math.round(pixelsPerSecond).toLocaleString() + ' px/s';
