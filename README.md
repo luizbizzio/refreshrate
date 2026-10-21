@@ -10,7 +10,7 @@ It focuses on three things:
 
 <br>
 <div align="center">
-  <img src="/refreshrate.png" alt="Desktop Screenshot">
+  <img src="refreshrate.png" alt="Desktop Screenshot">
 </div>
 <br>
 
