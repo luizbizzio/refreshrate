@@ -1,6 +1,6 @@
 <h1 align="center">Refresh Rate Test 🖥️</h1>
 
-[RefreshRate.app](https://refreshrate.app) is a browser-based tool to **measure how your display actually behaves in motion**, not just what the Windows panel says.
+[RefreshRate](https://refreshrate.luizbizzio.com) is a browser-based tool to **measure how your display actually behaves in motion**, not just what the Windows panel says.
 
 It focuses on three things:
 
@@ -54,7 +54,7 @@ It focuses on three things:
 
 1. **Open the app**  
    Go to:  
-   [https://refreshrate.app](https://refreshrate.app)
+   [https://refreshrate.luizbizzio.com](https://refreshrate.luizbizzio.com)
 
 2. **Put the window where it matters**  
    - Move the browser to the monitor you actually care about.
